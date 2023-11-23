@@ -6,14 +6,17 @@ import notiLogoAni from "../../assets/lottie/notiLogoAni.json";
 import settingsLogoAni from "../../assets/lottie/settingsLogoAni.json";
 import logoutLogoAni from "../../assets/lottie/logoutLogoAni.json";
 import Lottie from "lottie-react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
+import { userLoginInfo } from "../../slices/userSlice";
+import { toast } from "react-toastify";
 
 
 
 const Home = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const data = useSelector((state) => state.userLoginInfo.userInfo)
 
   // private page 
@@ -22,6 +25,13 @@ const Home = () => {
       navigate('/')
     }
   })
+
+  const logOutHandle = (e) => {
+    localStorage.removeItem("user")
+    dispatch(userLoginInfo(null))
+    navigate('/')
+    toast.warn("Logged out Successfully");
+  }
     return (
       <div>
         <div className="drawer lg:drawer-open">
@@ -78,10 +88,9 @@ const Home = () => {
               </ul>
               <ul className="menu p-4 w-30">
                 <li>
-                  <a>
-                    {" "}
+                  <button onClick={logOutHandle}>
                     <Lottie animationData={logoutLogoAni} />
-                  </a>
+                  </button>
                 </li>
               </ul>
             </div>
