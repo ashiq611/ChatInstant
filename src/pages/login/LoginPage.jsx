@@ -1,10 +1,27 @@
 import Lottie from "lottie-react";
 import loginAni from "../../assets/lottie/loginAni.json";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { useDispatch, useSelector } from "react-redux";
+import { userLoginInfo } from "../../slices/userSlice";
+
 
 const LoginPage = () => {
+  const auth = getAuth();
+  const navigate = useNavigate()
+  const dispatch = useDispatch();
+
+  const data = useSelector((state) => state.userLoginInfo.userInfo);
+
+  // private page
+  useEffect(() => {
+    if (data) {
+      navigate("/home");
+    }
+  });
+
   // input value state start
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -47,11 +64,30 @@ const LoginPage = () => {
       setPasswordError("Please Enter Your Password");
     } else {
       console.log( email, password);
+
+      // firebase auth signin
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          // Signed in
+          const user = userCredential.user;
+          // ...
+          dispatch(userLoginInfo(user))
+          // in localstore, set storage
+          localStorage.setItem("user", JSON.stringify(user));
+          navigate('/home')
+          toast.success("Logged In Successfully");
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(error)
+        });
       // toastify
-      toast.success("Logged In Successfully");
     }
   };
   // form submit shandle ends
+
+
 
   return (
     <div>

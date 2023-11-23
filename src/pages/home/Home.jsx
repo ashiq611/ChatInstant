@@ -6,10 +6,22 @@ import notiLogoAni from "../../assets/lottie/notiLogoAni.json";
 import settingsLogoAni from "../../assets/lottie/settingsLogoAni.json";
 import logoutLogoAni from "../../assets/lottie/logoutLogoAni.json";
 import Lottie from "lottie-react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 
 
 const Home = () => {
+  const navigate = useNavigate()
+  const data = useSelector((state) => state.userLoginInfo.userInfo)
+
+  // private page 
+  useEffect(() => {
+    if(!data) {
+      navigate('/')
+    }
+  })
     return (
       <div>
         <div className="drawer lg:drawer-open">
@@ -36,7 +48,7 @@ const Home = () => {
                 <li>
                   <div className="avatar online">
                     <div className="w-24 rounded-full">
-                      <img src="https://img.freepik.com/premium-vector/female-user-profile-avatar-is-woman-character-screen-saver-with-emotions_505620-617.jpg" />
+                      <img src={data?.photoURL} />
                     </div>
                   </div>
                 </li>
