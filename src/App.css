@@ -1,0 +1,14 @@
+/* styles.css */
+
+/* Webkit (Chrome, Safari) */
+.list::-webkit-scrollbar {
+  @apply w-[5px]
+}
+
+
+
+.list::-webkit-scrollbar-thumb {
+  /* background-color: rgb(255, 64, 0); */
+  @apply bg-teal-500 rounded-lg
+}
+
