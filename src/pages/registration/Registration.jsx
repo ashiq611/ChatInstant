@@ -3,8 +3,18 @@ import Lottie from "lottie-react";
 import regAni from "../../assets/lottie/regAni.json";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+} from "firebase/auth";
+import { Link, useNavigate } from "react-router-dom";
+
 
 const Registration = () => {
+  const auth = getAuth();
+  const navigate = useNavigate()
+
   // input value state start
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
@@ -54,8 +64,31 @@ const Registration = () => {
       setPasswordError("Please Enter Your Password");
     }else{
       console.log(fullName, email, password);
+
+      // firebase Auth
+      createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          updateProfile(auth.currentUser, {
+            displayName: fullName,
+            photoURL:
+              "https://sdi-implant.com/wp-content/uploads/2018/02/avatar-1577909_960_720.png",
+          });
+          // Signed up
+          const user = userCredential.user;
+          // ...
+          console.log(user);
+          navigate('/')
+           toast.success("Registration Successfully");
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+          console.log(error);
+          // ..
+        });
+
       // toastify
-      toast.success('Registration Successfully');
+     
     }
   };
   // form submit shandle ends
@@ -124,9 +157,9 @@ const Registration = () => {
                 <label className="label">
                   <p className="label-text-alt">
                     Already have an account ?
-                    <a href="" className="label-text-alt link link-hover">
+                    <Link to='/' className="label-text-alt link link-hover">
                       Sign In
-                    </a>
+                    </Link>
                   </p>
                 </label>
               </div>

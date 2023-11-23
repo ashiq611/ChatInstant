@@ -2,6 +2,7 @@ import Lottie from "lottie-react";
 import loginAni from "../../assets/lottie/loginAni.json";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 const LoginPage = () => {
   // input value state start
@@ -109,9 +110,9 @@ const LoginPage = () => {
                   <label className="label">
                     <p className="label-text-alt">
                       Don’t have an account ?
-                      <a href="" className="label-text-alt link link-hover">
+                      <Link to='/registration' className="label-text-alt link link-hover">
                         Sign up
-                      </a>
+                      </Link>
                     </p>
                   </label>
                 </div>
