@@ -1,7 +1,7 @@
 import Lottie from "lottie-react";
 // import loginAni from '../../assets/lottie/loginAni.json'
 import regAni from "../../assets/lottie/regAni.json";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import {
   getAuth,
@@ -9,11 +9,21 @@ import {
   updateProfile,
 } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 
 const Registration = () => {
   const auth = getAuth();
   const navigate = useNavigate()
+
+   const data = useSelector((state) => state.userLoginInfo.userInfo);
+
+   // private page
+   useEffect(() => {
+     if (data) {
+       navigate("/home");
+     }
+   });
 
   // input value state start
   const [fullName, setFullName] = useState("");
