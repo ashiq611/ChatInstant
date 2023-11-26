@@ -7,6 +7,7 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   updateProfile,
+  sendEmailVerification,
 } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -87,6 +88,8 @@ const Registration = () => {
           const user = userCredential.user;
           // ...
           console.log(user);
+          // verification email
+          sendEmailVerification(auth.currentUser);
           navigate('/')
            toast.success("Registration Successfully");
         })

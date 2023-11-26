@@ -26,7 +26,7 @@ const Home = () => {
     }
   })
 
-  const logOutHandle = (e) => {
+  const logOutHandle = () => {
     localStorage.removeItem("user")
     dispatch(userLoginInfo(null))
     navigate('/')
