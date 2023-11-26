@@ -139,9 +139,9 @@ const LoginPage = () => {
                 </p>
                 <div className="md:flex md:justify-between">
                   <label className="label">
-                    <a href="#" className="label-text-alt link link-hover">
+                    <Link to='/forgotpassword' className="label-text-alt link link-hover">
                       Forgot password?
-                    </a>
+                    </Link>
                   </label>
                   <label className="label">
                     <p className="label-text-alt">
