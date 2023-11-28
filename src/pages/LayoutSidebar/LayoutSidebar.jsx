@@ -1,11 +1,11 @@
-// react cropper import 
-import  { useState, useRef } from "react";
+// react cropper import
+import { useState, useRef } from "react";
 // import Cropper from "react-cropper";
 import { Cropper } from "react-cropper";
 import "cropperjs/dist/cropper.css";
 
 // own import
-import Homes from "../../components/Homes";
+
 import { ImCross } from "react-icons/im";
 import homeLogoAni from "../../assets/lottie/homeLogoAni.json";
 import inboxLogoAni from "../../assets/lottie/inboxLogoAni.json";
@@ -14,22 +14,26 @@ import settingsLogoAni from "../../assets/lottie/settingsLogoAni.json";
 import logoutLogoAni from "../../assets/lottie/logoutLogoAni.json";
 import Lottie from "lottie-react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { userLoginInfo } from "../../slices/userSlice";
 import { toast } from "react-toastify";
 import { FaCloudUploadAlt } from "react-icons/fa";
 // file upload in firebase
-import { getDownloadURL, getStorage, ref, uploadString } from "firebase/storage";
-import { getAuth, updateProfile } from 'firebase/auth';
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadString,
+} from "firebase/storage";
+import { getAuth, updateProfile } from "firebase/auth";
 
-
-const Home = () => {
-  const auth = getAuth()
+const LayoutSidebar = ({ children }) => {
+  const auth = getAuth();
   // file uplaod in firebase starts
   const storage = getStorage();
-  
-// file upload in firebase ends
+
+  // file upload in firebase ends
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const data = useSelector((state) => state.userLoginInfo.userInfo);
@@ -39,65 +43,64 @@ const Home = () => {
   const [cropData, setCropData] = useState("#");
   const cropperRef = useRef();
 
-   const handleProfileUplaod = (e) => {
-     e.preventDefault();
+  const handleProfileUplaod = (e) => {
+    e.preventDefault();
 
-     let files;
+    let files;
 
-     if (e.dataTransfer) {
-       files = e.dataTransfer.files;
-     } else if (e.target) {
-       files = e.target.files;
-     }
-     const reader = new FileReader();
-     reader.onload = () => {
-       setImage(reader.result);
-     };
-     reader.readAsDataURL(files[0]);
-   };
-   const uploadCancel = () => {
-     setCropData("");
-     setImage("");
-   };
+    if (e.dataTransfer) {
+      files = e.dataTransfer.files;
+    } else if (e.target) {
+      files = e.target.files;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImage(reader.result);
+    };
+    reader.readAsDataURL(files[0]);
+  };
+  const uploadCancel = () => {
+    setCropData("");
+    setImage("");
+  };
 
-   const getCropData = () => {
-     if (typeof cropperRef.current?.cropper !== "undefined") {
-       setCropData(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
+  const getCropData = () => {
+    if (typeof cropperRef.current?.cropper !== "undefined") {
+      setCropData(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
 
       //  firebase file upload
 
-       const storageRef = ref(storage, auth?.currentUser?.uid);
+      const storageRef = ref(storage, auth?.currentUser?.uid);
 
-        //or or or from redux store use
-      //  const storageRef = ref(storage, data?.uid);  
+      //or or or from redux store use
+      //  const storageRef = ref(storage, data?.uid);
 
-       // Data URL string
-       const message4 = cropperRef.current?.cropper
-         .getCroppedCanvas()
-         .toDataURL();
-       uploadString(storageRef, message4, "data_url").then((snapshot) => {
+      // Data URL string
+      const message4 = cropperRef.current?.cropper
+        .getCroppedCanvas()
+        .toDataURL();
+      uploadString(storageRef, message4, "data_url").then((snapshot) => {
         //  console.log("Uploaded a data_url string!");
 
-          getDownloadURL(storageRef).then((downloadURL) => {
-            // console.log("File available at", downloadURL);
-            updateProfile(auth?.currentUser, {
-              photoURL: downloadURL,
-            });
-            // redux store update
-            dispatch(userLoginInfo({
-              ...data,
-              photoURL: downloadURL
-            }));
-            // local storage update
-            localStorage.setItem("user", JSON.stringify(auth.currentUser))
+        getDownloadURL(storageRef).then((downloadURL) => {
+          // console.log("File available at", downloadURL);
+          updateProfile(auth?.currentUser, {
+            photoURL: downloadURL,
           });
-       });
-     }
-   };
-
-   
-
-
+          // redux store update
+          dispatch(
+            userLoginInfo({
+              ...data,
+              photoURL: downloadURL,
+            })
+          );
+          // local storage update
+          localStorage.setItem("user", JSON.stringify(auth.currentUser));
+          toast.success("Your Profile Picture is uploaded Successfully");
+        });
+      });
+    }
+  };
 
   // react cropper ends
 
@@ -120,7 +123,9 @@ const Home = () => {
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
         <div className="h-screen w-full  drawer-content flex flex-col items-center justify-center">
           {/* Page content here */}
-          <Homes />
+
+          {children}
+          {/* Page content here */}
           {/* profile upload modal */}
           <div>
             <dialog id="my_modal_1" className="modal">
@@ -217,9 +222,9 @@ const Home = () => {
             </ul>
             <ul className="menu p-4 w-30 flex flex-col items-center gap-8 font-bold">
               <li>
-                <a>
+                <Link to="/home">
                   <Lottie animationData={homeLogoAni} />
-                </a>
+                </Link>
               </li>
               <li>
                 <a>
@@ -228,9 +233,9 @@ const Home = () => {
                 </a>
               </li>
               <li>
-                <a>
+                <Link to="/notifications">
                   <Lottie animationData={notiLogoAni} />
-                </a>
+                </Link>
               </li>
               <li>
                 <a>
@@ -277,4 +282,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default LayoutSidebar;
