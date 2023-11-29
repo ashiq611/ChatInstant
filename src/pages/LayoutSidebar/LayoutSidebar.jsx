@@ -60,8 +60,8 @@ const LayoutSidebar = ({ children }) => {
     reader.readAsDataURL(files[0]);
   };
   const uploadCancel = () => {
-    setCropData("");
     setImage("");
+    setCropData("");
   };
 
   const getCropData = () => {
@@ -98,6 +98,8 @@ const LayoutSidebar = ({ children }) => {
           localStorage.setItem("user", JSON.stringify(auth.currentUser));
           toast.success("Your Profile Picture is uploaded Successfully");
         });
+        setImage("");
+        setCropData("");
       });
     }
   };
@@ -110,6 +112,8 @@ const LayoutSidebar = ({ children }) => {
       navigate("/");
     }
   });
+
+  console.log(image)
 
   const logOutHandle = () => {
     localStorage.removeItem("user");
@@ -141,7 +145,7 @@ const LayoutSidebar = ({ children }) => {
                   />
                 </div>
                 <div>
-                  {!image ? (
+                  {!image && image == '<empty string>' ? (
                     <div>
                       <img
                         src={data?.photoURL}
