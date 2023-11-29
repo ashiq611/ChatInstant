@@ -28,6 +28,7 @@ import {
 } from "firebase/storage";
 import { getAuth, updateProfile } from "firebase/auth";
 
+
 const LayoutSidebar = ({ children }) => {
   const auth = getAuth();
   // file uplaod in firebase starts
@@ -86,7 +87,9 @@ const LayoutSidebar = ({ children }) => {
           // console.log("File available at", downloadURL);
           updateProfile(auth?.currentUser, {
             photoURL: downloadURL,
-          });
+          })
+          
+          
           // redux store update
           dispatch(
             userLoginInfo({
@@ -98,6 +101,7 @@ const LayoutSidebar = ({ children }) => {
           localStorage.setItem("user", JSON.stringify(auth.currentUser));
           toast.success("Your Profile Picture is uploaded Successfully");
         });
+        // clear modal
         setImage("");
         setCropData("");
       });

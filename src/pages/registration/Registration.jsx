@@ -11,11 +11,15 @@ import {
 } from "firebase/auth";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { getDatabase, ref, set } from "firebase/database";
+
 
 
 const Registration = () => {
   const auth = getAuth();
+  const db = getDatabase();
   const navigate = useNavigate()
+
 
    const data = useSelector((state) => state.userLoginInfo.userInfo);
 
@@ -89,7 +93,14 @@ const Registration = () => {
           // ...
           console.log(user);
           // verification email
-          sendEmailVerification(auth.currentUser);
+          sendEmailVerification(auth.currentUser)
+          //user stored in realtime database
+          .then(() => {set(ref(db, "users/" + auth.currentUser.uid), {
+            username: auth?.currentUser?.displayName,
+            email: auth?.currentUser?.email,
+            profile_picture: auth?.currentUser?.photoURL,
+          });
+})
           navigate('/')
            toast.success("Registration Successfully");
         })
@@ -105,6 +116,7 @@ const Registration = () => {
     }
   };
   // form submit shandle ends
+  
 
   return (
     <div>
