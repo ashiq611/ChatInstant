@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { HiDotsVertical } from "react-icons/hi";
 import { getDatabase, ref, onValue } from "firebase/database";
-import { data } from "autoprefixer";
 import { useSelector } from "react-redux";
 
 

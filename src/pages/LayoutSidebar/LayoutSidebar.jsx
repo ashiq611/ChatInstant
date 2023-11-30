@@ -27,12 +27,16 @@ import {
   uploadString,
 } from "firebase/storage";
 import { getAuth, updateProfile } from "firebase/auth";
+ //  update profile in realtime db
+import { getDatabase, ref as dbRef, set } from "firebase/database";
 
 
 const LayoutSidebar = ({ children }) => {
   const auth = getAuth();
   // file uplaod in firebase starts
   const storage = getStorage();
+  //  update profile in realtime db
+  const database = getDatabase();
 
   // file upload in firebase ends
   const navigate = useNavigate();
@@ -87,9 +91,22 @@ const LayoutSidebar = ({ children }) => {
           // console.log("File available at", downloadURL);
           updateProfile(auth?.currentUser, {
             photoURL: downloadURL,
-          })
-          
-          
+          });
+
+          //  update profile in realtime db
+          const databaseRef = dbRef(
+            database,
+            `/users/${auth?.currentUser?.uid}/`
+          );
+          set(databaseRef, {
+            email: auth?.currentUser?.email,
+            profile_picture: downloadURL,
+            username: auth?.currentUser?.displayName,
+          });
+          console.log(databaseRef.val)
+
+         
+
           // redux store update
           dispatch(
             userLoginInfo({
@@ -117,7 +134,8 @@ const LayoutSidebar = ({ children }) => {
     }
   });
 
-  console.log(image)
+  console.log(image);
+
 
   const logOutHandle = () => {
     localStorage.removeItem("user");
@@ -149,7 +167,7 @@ const LayoutSidebar = ({ children }) => {
                   />
                 </div>
                 <div>
-                  {!image && image == '<empty string>' ? (
+                  {!image && image == "<empty string>" ? (
                     <div>
                       <img
                         src={data?.photoURL}
