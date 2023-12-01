@@ -37,6 +37,7 @@ const LayoutSidebar = ({ children }) => {
   const storage = getStorage();
   //  update profile in realtime db
   const database = getDatabase();
+ 
 
   // file upload in firebase ends
   const navigate = useNavigate();
@@ -103,9 +104,7 @@ const LayoutSidebar = ({ children }) => {
             profile_picture: downloadURL,
             username: auth?.currentUser?.displayName,
           });
-          console.log(databaseRef.val)
-
-         
+        
 
           // redux store update
           dispatch(
@@ -118,14 +117,28 @@ const LayoutSidebar = ({ children }) => {
           localStorage.setItem("user", JSON.stringify(auth.currentUser));
           toast.success("Your Profile Picture is uploaded Successfully");
         });
+
         // clear modal
         setImage("");
         setCropData("");
+
+        //  update profile in realtime db
+        // const databaseRef = dbRef(
+        //   database,
+        //   `/users/${auth?.currentUser?.uid}/`
+        // );
+        // set(databaseRef, {
+        //   email: auth?.currentUser?.email,
+        //   profile_picture: auth?.currentUser?.photoURL,
+        //   username: auth?.currentUser?.displayName,
+        // });
       });
     }
   };
 
   // react cropper ends
+
+ 
 
   // private page
   useEffect(() => {
