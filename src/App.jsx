@@ -8,6 +8,7 @@ import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 import Notification from "./pages/Notifications/Notification";
 import Homes from "./pages/Home/Homes";
 import LayoutSidebar from "./pages/LayoutSidebar/LayoutSidebar";
+import Settings from "./pages/Settings/Settings";
 
 function App() {
   return (
@@ -28,6 +29,14 @@ function App() {
           element={
             <LayoutSidebar>
               <Notification />
+            </LayoutSidebar>
+          }
+        />
+        <Route
+          path="/settings"
+          element={
+            <LayoutSidebar>
+              <Settings/>
             </LayoutSidebar>
           }
         />

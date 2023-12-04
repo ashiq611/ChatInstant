@@ -1,3 +1,4 @@
+
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -5,16 +6,15 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyA6dTH_q6Qb-rAvv-3a8t4av3h_HFAPtCw",
-  authDomain: "chatinstant-4fd2b.firebaseapp.com",
-  projectId: "chatinstant-4fd2b",
-  storageBucket: "chatinstant-4fd2b.appspot.com",
-  messagingSenderId: "984575691853",
-  appId: "1:984575691853:web:aaaf6138bb1cb399432004",
+  apiKey: "AIzaSyCAYotyv_1AnVasd2oq4kRq5hv58SJRJAs",
+  authDomain: "chatinstant-app.firebaseapp.com",
+  projectId: "chatinstant-app",
+  storageBucket: "chatinstant-app.appspot.com",
+  messagingSenderId: "904399935800",
+  appId: "1:904399935800:web:d2cf77a78c0262ac42c9cd"
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-
 
 export default firebaseConfig;

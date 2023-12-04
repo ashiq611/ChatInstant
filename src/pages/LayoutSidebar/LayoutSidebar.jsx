@@ -277,9 +277,9 @@ const LayoutSidebar = ({ children }) => {
                 </Link>
               </li>
               <li>
-                <a>
+                <Link to='/settings'>
                   <Lottie animationData={settingsLogoAni} />
-                </a>
+                </Link>
               </li>
             </ul>
             <ul className="menu p-4 w-30">
