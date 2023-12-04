@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { HiDotsVertical } from "react-icons/hi";
-import { getDatabase, ref, onValue } from "firebase/database";
+import { getDatabase, ref, onValue, set, push } from "firebase/database";
 import { useSelector } from "react-redux";
+import FriendRequest from './FriendRequest';
 
 
 
@@ -9,6 +10,7 @@ const UserList = () => {
   // realtime firebase
   const db = getDatabase();
   const [userList, setUserList] = useState([]);
+  const [friendRequestList, setfriendRequestList] = useState([]);
 
   const data = useSelector((state) => state.userLoginInfo.userInfo);
 
@@ -28,7 +30,36 @@ const UserList = () => {
         setUserList(list);
       });
     });
-  }, [userList]);
+  }, [data]);
+
+
+  // send friend request starts
+  const handleFriendReq = (user) => {
+    // console.log(user);
+    set(push(ref(db, "friendRequest")), {
+      senderID: data.uid,
+      senderName: data.displayName,
+      receiverID: user.id,
+      receiverName: user.username,
+    });
+
+  }
+
+  useEffect(() => {
+    const friendRequestRef = ref(db, "friendRequest");
+    onValue(friendRequestRef, (snapshot) => {
+      let friendRequest = [];
+      snapshot.forEach((req) => {
+        friendRequest.push(req.val().receiverID + req.val().senderID)
+
+      })
+      setfriendRequestList(friendRequest);
+
+    })
+
+  }, [setfriendRequestList])
+  // console.log(friendRequestList);
+  // send friend request ends
   return (
     <div className="relative">
       <div className="sticky top-0 p-2 flex justify-between bg-base-100 z-10 ">
@@ -60,9 +91,23 @@ const UserList = () => {
                 </div>
               </div>
               <div className="right flex items-center gap-2 flex-wrap">
-                <button className="btn btn-info btn-xs lg:btn-sm ">
-                  Add Friend
-                </button>
+                {friendRequestList.includes(user.id + data.uid) ||
+                friendRequestList.includes(data.uid + user.id) ? (
+                  <button
+                    
+                    className="btn btn-warning btn-xs lg:btn-sm "
+                  >
+                    Request Send..
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => handleFriendReq(user)}
+                    className="btn btn-info btn-xs lg:btn-sm "
+                  >
+                    Add Friend
+                  </button>
+                )}
+                
               </div>
             </div>
           );
