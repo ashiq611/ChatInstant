@@ -83,8 +83,8 @@ const LoginPage = () => {
 
           set(push(ref(db, "devices")), {
             userID: user.uid,
-            deviceName: "Desktop",
-            os: "Windows",
+            deviceName: navigator.appCodeName,
+            os: navigator.appVersion,
             loggedInDate: loggedInDate, // Add the Logged In Date
             loggedIn: true,
           });
@@ -102,6 +102,10 @@ const LoginPage = () => {
     }
   };
   // form submit shandle ends
+
+  
+
+  
 
 
 

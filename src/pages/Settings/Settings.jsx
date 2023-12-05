@@ -1,6 +1,7 @@
 import { getDatabase, onValue, ref } from "firebase/database";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { MdOutlineMenuOpen } from "react-icons/md";
 
 
 const Settings = () => {
@@ -21,9 +22,22 @@ const Settings = () => {
         setDevices(device);
       });
     }, [setDevices, db, data?.uid]);
-    console.log(devices);
+
     return (
       <div>
+        <div>
+          <label
+            htmlFor="my-drawer-2"
+            className="btn btn-primary btn-sm drawer-button text-2xl lg:hidden"
+          >
+            <MdOutlineMenuOpen />
+          </label>
+        </div>
+        <div>
+          <div className="grid h-20 card bg-base-300 font-semibold text-2xl text-red-600 rounded-box place-items-center">
+            Logged In History
+          </div>
+        </div>
         <div className="overflow-x-auto">
           <table className="table table-zebra">
             {/* head */}

@@ -14,7 +14,7 @@ const Homes = () => {
         <div className="h-screen w-full lg:flex justify-between flex-wrap">
           <label
             htmlFor="my-drawer-2"
-            className="btn btn-primary btn-sm drawer-button text-2xl lg:hidden sticky top-0 left-0 z-30"
+            className="btn btn-primary btn-sm drawer-button text-2xl lg:hidden"
           >
             <MdOutlineMenuOpen />
           </label>
