@@ -147,7 +147,7 @@ const LayoutSidebar = ({ children }) => {
     }
   });
 
-  console.log(image);
+  // console.log(image);
 
 
   const logOutHandle = () => {

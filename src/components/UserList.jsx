@@ -97,7 +97,7 @@ const UserList = () => {
                     
                     className="btn btn-warning btn-xs lg:btn-sm "
                   >
-                    Request Send..
+                    Request Sent..
                   </button>
                 ) : (
                   <button

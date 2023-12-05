@@ -2,9 +2,11 @@ import { getDatabase, onValue, ref } from "firebase/database";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { MdOutlineMenuOpen } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 
 
 const Settings = () => {
+  const navigate = useNavigate();
     const db = getDatabase();
     const [devices, setDevices] = useState([]);
 
@@ -22,6 +24,14 @@ const Settings = () => {
         setDevices(device);
       });
     }, [setDevices, db, data?.uid]);
+
+
+      // private page
+      useEffect(() => {
+        if (!data) {
+          navigate("/");
+        }
+      });
 
     return (
       <div>

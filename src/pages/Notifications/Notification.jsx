@@ -1,6 +1,17 @@
+import { useEffect } from "react";
 import { MdOutlineMenuOpen } from "react-icons/md";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const Notification = () => {
+    const navigate = useNavigate();
+  const data = useSelector((state) => state.userLoginInfo.userInfo);
+  // private page
+  useEffect(() => {
+    if (!data) {
+      navigate("/");
+    }
+  });
   return (
     <div>
       <div>
