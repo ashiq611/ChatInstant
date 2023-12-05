@@ -6,9 +6,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { userLoginInfo } from "../../slices/userSlice";
+import { getDatabase, push, ref, set } from "firebase/database";
 
 
 const LoginPage = () => {
+    const db = getDatabase();
   const auth = getAuth();
   const navigate = useNavigate()
   const dispatch = useDispatch();
@@ -71,10 +73,24 @@ const LoginPage = () => {
           // Signed in
           const user = userCredential.user;
           // ...
-          dispatch(userLoginInfo(user))
+          dispatch(userLoginInfo(user));
           // in localstore, set storage
           localStorage.setItem("user", JSON.stringify(user));
-          navigate('/home')
+
+          // auth device
+          // Record the Logged In Date
+          const loggedInDate = new Date().toISOString();
+
+          set(push(ref(db, "devices")), {
+            userID: user.uid,
+            deviceName: "Desktop",
+            os: "Windows",
+            loggedInDate: loggedInDate, // Add the Logged In Date
+            loggedIn: true,
+          });
+          // auth device
+
+          navigate("/home");
           toast.success("Logged In Successfully");
         })
         .catch((error) => {

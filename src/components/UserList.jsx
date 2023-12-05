@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { HiDotsVertical } from "react-icons/hi";
 import { getDatabase, ref, onValue, set, push } from "firebase/database";
 import { useSelector } from "react-redux";
-import FriendRequest from './FriendRequest';
+
 
 
 
@@ -30,7 +30,7 @@ const UserList = () => {
         setUserList(list);
       });
     });
-  }, [data]);
+  }, [data, db]);
 
 
   // send friend request starts
@@ -57,7 +57,7 @@ const UserList = () => {
 
     })
 
-  }, [setfriendRequestList])
+  }, [setfriendRequestList,db])
   // console.log(friendRequestList);
   // send friend request ends
   return (

@@ -153,6 +153,7 @@ const LayoutSidebar = ({ children }) => {
   const logOutHandle = () => {
     localStorage.removeItem("user");
     dispatch(userLoginInfo(null));
+   
     navigate("/");
     toast.warn("Logged out Successfully");
   };
