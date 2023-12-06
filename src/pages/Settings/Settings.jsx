@@ -34,7 +34,7 @@ const Settings = () => {
       });
 
     return (
-      <div>
+      <div >
         <div>
           <label
             htmlFor="my-drawer-2"

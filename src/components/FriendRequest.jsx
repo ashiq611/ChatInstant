@@ -28,7 +28,7 @@ const FriendRequest = () => {
    
   }, [setPendingReq, db, data.uid]);
 
-  console.log(pendingReq)
+  // console.log(pendingReq)
   return (
     <div className="relative">
       <div className="sticky top-0 p-2 flex justify-between bg-base-100 z-10 ">

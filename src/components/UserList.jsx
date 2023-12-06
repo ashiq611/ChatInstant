@@ -43,6 +43,16 @@ const UserList = () => {
       receiverName: user.username,
     });
 
+    // user notification
+    // Record the notification Date
+    const loggedInDate = new Date().toISOString();
+
+    set(push(ref(db, "notifications")), {
+      userID: user.id,
+      note: `${data.displayName} send you friend Request`,
+      loggedInDate: loggedInDate, // Add the Logged In Date
+    });
+    // user notifications
   }
 
   useEffect(() => {
