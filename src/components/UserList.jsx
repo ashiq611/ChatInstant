@@ -37,7 +37,7 @@ const UserList = () => {
 
   // send friend request starts
   const handleFriendReq = (user) => {
-    // console.log(user);
+    console.log(user);
     set(push(ref(db, "friendRequest")), {
       senderID: data.uid,
       senderName: data.displayName,

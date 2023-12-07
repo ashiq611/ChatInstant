@@ -38,7 +38,7 @@ const FriendRequest = () => {
 
   // acept req
   const handdleFriendReqAcept = (req) => {
-    console.log(req);
+    // console.log(req);
     set(push(ref(db, "friends")),{...req})
     .then(() => {
       remove(ref(db, "friendRequest/" + req.id));
@@ -46,7 +46,7 @@ const FriendRequest = () => {
 
   }
 
-  // console.log(pendingReq);
+  console.log(pendingReq);
   return (
     <div className="relative">
       <div className="sticky top-0 p-2 flex justify-between bg-base-100 z-10 ">
@@ -61,8 +61,8 @@ const FriendRequest = () => {
       <div className="divide-y divide-blue-900 ">
         {/* single */}
         {pendingReq?.map((r) => (
-          <>
-            <div key={r.id} className="flex justify-between px-5 py-2">
+          <div key={r.id}>
+            <div  className="flex justify-between px-5 py-2">
               <div className="left flex gap-5">
                 <div className="avatar">
                   <div className="w-12 rounded-full">
@@ -113,7 +113,9 @@ const FriendRequest = () => {
                   <h3 className="font-bold text-lg">Hello!</h3>
                   <p className="py-4">
                     Are you want cancel{" "}
-                    <span className="badge badge-secondary">{r.senderName}</span>
+                    <span className="badge badge-secondary">
+                      {r.senderName}
+                    </span>
                     Friend Request?
                   </p>
                   <div className="modal-action">
@@ -131,7 +133,7 @@ const FriendRequest = () => {
                 </div>
               </dialog>
             </div>
-          </>
+          </div>
         ))}
       </div>
     </div>
