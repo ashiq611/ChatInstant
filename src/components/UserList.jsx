@@ -11,6 +11,7 @@ const UserList = () => {
   const db = getDatabase();
   const [userList, setUserList] = useState([]);
   const [friendRequestList, setfriendRequestList] = useState([]);
+  const [friendList, setFriendList] = useState([])
 
   const data = useSelector((state) => state.userLoginInfo.userInfo);
 
@@ -19,7 +20,8 @@ const UserList = () => {
     const userRef = ref(db, "users");
     let list = [];
     onValue(userRef, (snapShot) => {
-      snapShot.forEach((user) => {
+     
+      snapShot.forEach((user) => { 
         if (data.uid !== user.key) {
           list.push({
             ...user.val(),
@@ -39,8 +41,10 @@ const UserList = () => {
     set(push(ref(db, "friendRequest")), {
       senderID: data.uid,
       senderName: data.displayName,
+      senderProfile: data.photoURL,
       receiverID: user.id,
       receiverName: user.username,
+      receiverProfile: user.profile_picture,
     });
 
     // user notification
@@ -68,8 +72,26 @@ const UserList = () => {
     })
 
   }, [setfriendRequestList,db])
-  // console.log(friendRequestList);
+  // console.log(userList);
   // send friend request ends
+
+  useEffect(() => {
+    const friendListRef = ref(db, "friends");
+    onValue(friendListRef, (snapshot) => {
+      let friendList = [];
+      snapshot.forEach((friend) => {
+        friendList.push(friend.val().receiverID + friend.val().senderID);
+      })
+      setFriendList(friendList)
+
+
+    });
+
+  },[db])
+
+
+
+
   return (
     <div className="relative">
       <div className="sticky top-0 p-2 flex justify-between bg-base-100 z-10 ">
@@ -96,28 +118,35 @@ const UserList = () => {
                     <h1>{user.username}</h1>
                   </div>
                   <div className="inbox text-sm md:text-base">
-                    <p>hello..</p>
+                    <p>{user.email}</p>
                   </div>
                 </div>
               </div>
               <div className="right flex items-center gap-2 flex-wrap">
-                {friendRequestList.includes(user.id + data.uid) ||
-                friendRequestList.includes(data.uid + user.id) ? (
-                  <button
-                    
-                    className="btn btn-warning btn-xs lg:btn-sm "
-                  >
-                    Request Sent..
+                {friendList.includes(user.id + data.uid) ||
+                friendList.includes(data.uid + user.id) ? (
+                  <button className="btn btn-warning btn-xs lg:btn-sm ">
+                    Friend
                   </button>
                 ) : (
-                  <button
-                    onClick={() => handleFriendReq(user)}
-                    className="btn btn-info btn-xs lg:btn-sm "
-                  >
-                    Add Friend
-                  </button>
+                  <>
+                    {friendRequestList.includes(user.id + data.uid) ||
+                    friendRequestList.includes(data.uid + user.id) ? (
+                      <button
+                        className="btn btn-info btn-xs lg:btn-sm "
+                      >
+                        Request Send...
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => handleFriendReq(user)}
+                        className="btn btn-info btn-xs lg:btn-sm "
+                      >
+                        Add Friend
+                      </button>
+                    )}
+                  </>
                 )}
-                
               </div>
             </div>
           );

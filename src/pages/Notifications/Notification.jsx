@@ -26,13 +26,14 @@ const Notification = () => {
      let note = [];
      snapshot.forEach((req) => {
        if (req.val().userID === data?.uid) {
-         note.push(req.val());
+         note.push({...req.val(), id: req.key});
        }
      });
      setNote(note);
    });
    // user notifications
  },[db, data?.uid])
+//  console.log(note);
   return (
     <div>
       <div>
@@ -46,7 +47,7 @@ const Notification = () => {
       <h1>notification</h1>
       {note?.map((n) => (
         <>
-          <div role="alert" className="alert shadow-lg">
+          <div key={n.id} role="alert" className="alert shadow-lg">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

@@ -18,7 +18,7 @@ const Settings = () => {
         let device = [];
         snapshot.forEach((req) => {
           if (req.val().userID === data?.uid) {
-            device.push(req.val());
+            device.push({...req.val(), id: req.key});
           }
         });
         setDevices(device);
@@ -62,7 +62,7 @@ const Settings = () => {
             <tbody>
               {/* row 1 */}
               {devices?.map((d) => (
-                <tr key={d.userID}>
+                <tr key={d.id}>
                   <td>{d.deviceName}</td>
                   <td>{d.os}</td>
                   <td>
