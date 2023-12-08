@@ -3,7 +3,7 @@ import { HiDotsVertical } from "react-icons/hi";
 const MyGroups = () => {
   return (
     <div className="relative">
-      <div className="sticky top-0 p-2 flex justify-between bg-base-100 z-10 ">
+      <div className="sticky top-0 p-2 flex justify-between bg-base-100 z-10">
         <h1 className="head font-bold text-xl font-mono">My Groups</h1>
         <div className="text-2xl font-bold text-cyan-600 cursor-pointer">
           <HiDotsVertical />

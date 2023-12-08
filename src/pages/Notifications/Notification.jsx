@@ -4,6 +4,7 @@ import { MdOutlineMenuOpen } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
+
 const Notification = () => {
    const db = getDatabase();
   const [note, setNote] = useState([]);
@@ -26,16 +27,21 @@ const Notification = () => {
      let note = [];
      snapshot.forEach((req) => {
        if (req.val().userID === data?.uid) {
-         note.push({...req.val(), id: req.key});
+         note.push({ ...req.val(), id: req.key });
        }
      });
+     
      setNote(note);
    });
    // user notifications
+
+
+   
  },[db, data?.uid])
 //  console.log(note);
+
   return (
-    <div>
+    <div className="w-screen h-screen overflow-y-scroll">
       <div>
         <label
           htmlFor="my-drawer-2"
@@ -44,7 +50,9 @@ const Notification = () => {
           <MdOutlineMenuOpen />
         </label>
       </div>
-      <h1>notification</h1>
+      <div className="sticky top-0 p-2 flex justify-between bg-base-100 z-10">
+        <h1 className="head font-bold text-xl font-mono">Notification</h1>
+      </div>
       {note?.map((n) => (
         <>
           <div key={n.id} role="alert" className="alert shadow-lg">
@@ -70,7 +78,6 @@ const Notification = () => {
             </div>
             <button className="btn btn-sm">See</button>
           </div>
-          
         </>
       ))}
     </div>

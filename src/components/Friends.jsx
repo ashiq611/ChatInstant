@@ -1,4 +1,4 @@
-import { getDatabase, onValue, ref } from "firebase/database";
+import { getDatabase, onValue, push, ref, remove, set } from "firebase/database";
 import { useEffect, useState } from "react";
 import { HiDotsVertical } from "react-icons/hi";
 import { useSelector } from "react-redux";
@@ -27,6 +27,22 @@ const Friends = () => {
     });
 
   }, [data.uid, db])
+
+
+
+  const handleUnfriend = (friend) => {
+      remove(ref(db, "friends/" + friend.id));
+  }
+
+
+  const handleBlock = (friend) => {
+
+    set(push(ref(db, "blocked")), { ...friend })
+    .then(() => {
+      remove(ref(db, "friends/" + friend.id));
+    });
+
+  }
 
 
 
@@ -60,10 +76,10 @@ const Friends = () => {
               </div>
             </div>
             <div className="right flex items-center gap-2 flex-wrap">
-              <button className="btn btn-warning btn-xs lg:btn-sm ">
+              <button onClick={() => handleBlock(f)} className="btn btn-warning btn-xs lg:btn-sm ">
                 Block
               </button>
-              <button className="btn btn-error btn-xs lg:btn-sm ">
+              <button onClick={() => handleUnfriend(f)} className="btn btn-error btn-xs lg:btn-sm ">
                 Unfriend
               </button>
             </div>
