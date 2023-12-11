@@ -41,7 +41,7 @@ const Notification = () => {
 //  console.log(note);
 
   return (
-    <div className="w-screen h-screen overflow-y-scroll">
+    <div className="lg:w-2/3 w-full h-screen overflow-y-scroll">
       <div>
         <label
           htmlFor="my-drawer-2"
@@ -55,7 +55,7 @@ const Notification = () => {
       </div>
       {note?.map((n) => (
         <>
-          <div key={n.id} role="alert" className="alert shadow-lg">
+          <div key={n.id} role="alert" className="alert shadow-lg mt-5">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"

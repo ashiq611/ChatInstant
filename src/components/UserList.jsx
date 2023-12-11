@@ -12,6 +12,7 @@ const UserList = () => {
   const [userList, setUserList] = useState([]);
   const [friendRequestList, setfriendRequestList] = useState([]);
   const [friendList, setFriendList] = useState([])
+  const [blockedList, setBlockedList] = useState([])
 
   const data = useSelector((state) => state.userLoginInfo.userInfo);
 
@@ -75,6 +76,8 @@ const UserList = () => {
   // console.log(userList);
   // send friend request ends
 
+
+  // friends datta check
   useEffect(() => {
     const friendListRef = ref(db, "friends");
     onValue(friendListRef, (snapshot) => {
@@ -89,6 +92,23 @@ const UserList = () => {
 
   },[db])
 
+
+  // block data check
+   useEffect(() => {
+     const blockListRef = ref(db, "blocked");
+     onValue(blockListRef, (snapshot) => {
+       let blockList = [];
+       snapshot.forEach((friend) => {
+         blockList.push(
+         friend.val().blockID + friend.val().blockByID
+         );
+       });
+       setBlockedList(blockList);
+     });
+   }, [db]);
+
+
+console.log(blockedList);
 
 
 
@@ -132,18 +152,25 @@ const UserList = () => {
                   <>
                     {friendRequestList.includes(user.id + data.uid) ||
                     friendRequestList.includes(data.uid + user.id) ? (
-                      <button
-                        className="btn btn-info btn-xs lg:btn-sm "
-                      >
+                      <button className="btn btn-secondary btn-xs lg:btn-sm ">
                         Request Send...
                       </button>
                     ) : (
-                      <button
-                        onClick={() => handleFriendReq(user)}
-                        className="btn btn-info btn-xs lg:btn-sm "
-                      >
-                        Add Friend
-                      </button>
+                      <>
+                        {blockedList.includes(user.id + data.uid) ||
+                        blockedList.includes(data.uid + user.id) ? (
+                          <button className="btn btn-warning btn-xs lg:btn-sm ">
+                            Blocked
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => handleFriendReq(user)}
+                            className="btn btn-info btn-xs lg:btn-sm "
+                          >
+                            Add Friend
+                          </button>
+                        )}{" "}
+                      </>
                     )}
                   </>
                 )}

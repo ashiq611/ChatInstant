@@ -17,7 +17,7 @@ const BlockedUsers = () => {
       let blockeds = [];
       snapshot.forEach((friend) => {
         if (
-          friend.val().receiverID === data.uid 
+          friend.val().blockByID === data.uid 
         ) {
           blockeds.push({ ...friend.val(), id: friend.key });
         }
@@ -44,12 +44,12 @@ const BlockedUsers = () => {
               <div className="left flex gap-5">
                 <div className="avatar">
                   <div className="w-12 rounded-full">
-                    <img src={b.senderProfile} />
+                    <img src={b.blockProfile} />
                   </div>
                 </div>
                 <div className="msg">
                   <div className="name font-bold text-base md:text-lg font-custom">
-                    <h1>{b.senderName}</h1>
+                    <h1>{b.blockName}</h1>
                   </div>
                   <div className="inbox text-sm md:text-base">
                     <p>hello...</p>
