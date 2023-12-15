@@ -13,6 +13,7 @@ const UserList = () => {
   const [friendRequestList, setfriendRequestList] = useState([]);
   const [friendList, setFriendList] = useState([])
   const [blockedList, setBlockedList] = useState([])
+  const [blockeds, setBlockeds] = useState([])
 
   const data = useSelector((state) => state.userLoginInfo.userInfo);
 
@@ -23,6 +24,7 @@ const UserList = () => {
     onValue(userRef, (snapShot) => {
      
       snapShot.forEach((user) => { 
+       
         if (data.uid !== user.key) {
           list.push({
             ...user.val(),
@@ -98,17 +100,20 @@ const UserList = () => {
      const blockListRef = ref(db, "blocked");
      onValue(blockListRef, (snapshot) => {
        let blockList = [];
+       let blocks = [];
        snapshot.forEach((friend) => {
+        blocks.push({ ...friend.val(), id: friend.key });
          blockList.push(
          friend.val().blockID + friend.val().blockByID
          );
        });
        setBlockedList(blockList);
+       setBlockeds(blocks)
      });
    }, [db]);
 
 
-console.log(blockedList);
+console.log(userList);
 
 
 
@@ -159,6 +164,7 @@ console.log(blockedList);
                       <>
                         {blockedList.includes(user.id + data.uid) ||
                         blockedList.includes(data.uid + user.id) ? (
+                          
                           <button className="btn btn-warning btn-xs lg:btn-sm ">
                             Blocked
                           </button>

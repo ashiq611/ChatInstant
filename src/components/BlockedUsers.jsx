@@ -1,4 +1,4 @@
-import { getDatabase, onValue, ref } from "firebase/database";
+import { getDatabase, onValue, ref, remove } from "firebase/database";
 import { useEffect, useState } from "react";
 import { HiDotsVertical } from "react-icons/hi";
 import { useSelector } from "react-redux";
@@ -26,7 +26,12 @@ const BlockedUsers = () => {
     });
   }, [data.uid, db]);
 
-  console.log(blockList)
+
+  const handleUnblock = (block)=> {
+    remove(ref(db, "blocked/" + block.id));
+  }
+
+  // console.log(blockList)
 
 
   return (
@@ -57,7 +62,7 @@ const BlockedUsers = () => {
                 </div>
               </div>
               <div className="right flex items-center gap-2 flex-wrap">
-                <button className="btn btn-warning btn-xs lg:btn-sm ">
+                <button onClick={() => handleUnblock(b) } className="btn btn-warning btn-xs lg:btn-sm ">
                   Unblock
                 </button>
               </div>

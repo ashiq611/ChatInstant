@@ -62,7 +62,7 @@ const Friends = () => {
      });
    }
   };
-console.log(friendList);
+// console.log(friendList);
   return (
     <div className="relative">
       <div className="sticky top-0 p-2 flex justify-between bg-base-100 z-10 ">
