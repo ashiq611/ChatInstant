@@ -87,7 +87,7 @@ const FriendRequest = () => {
                 </button>
                 <button
                   onClick={() =>
-                    document.getElementById("my_modal_5").showModal()
+                    document.getElementById("my_modal_6").showModal()
                   }
                   className="btn btn-error btn-xs lg:btn-sm "
                 >
@@ -106,7 +106,7 @@ const FriendRequest = () => {
                 open modal
               </button> */}
               <dialog
-                id="my_modal_5"
+                id="my_modal_6"
                 className="modal modal-bottom sm:modal-middle"
               >
                 <div className="modal-box">

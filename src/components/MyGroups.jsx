@@ -12,21 +12,55 @@ const MyGroups = () => {
 
 
   // read grp in realtime firebase
+  // useEffect(() => {
+  //   const groupRef = ref(db, "groups");
+  //   let list = [];
+  //   onValue(groupRef, (snapShot) => {
+  //     snapShot.forEach((grp) => {
+  //       if (data.uid == grp.val().adminID) {
+  //         list.push({
+  //           ...grp.val(),
+  //           id: grp.key,
+  //         });
+  //       }
+  //     });
+  //     setGroupList(list);
+  //   });
+    
+  // }, [data.uid,db]);
+
   useEffect(() => {
     const groupRef = ref(db, "groups");
-    let list = [];
-    onValue(groupRef, (snapShot) => {
-      snapShot.forEach((grp) => {
+
+    const fetchData = (snapshot) => {
+      let list = [];
+      snapshot.forEach((grp) => {
         if (data.uid == grp.val().adminID) {
           list.push({
             ...grp.val(),
             id: grp.key,
           });
         }
-        setGroupList(list);
       });
-    });
-  }, [data, db]);
+      // Clear the state before updating to prevent duplicates
+      setGroupList([]);
+
+      // Use functional update to ensure correct state update
+      setGroupList((prevList) => [...prevList, ...list]);
+    };
+
+    // Attach the listener
+    const unsubscribe = onValue(groupRef, fetchData);
+
+    // Detach the listener after the initial data fetch
+    return () => unsubscribe();
+  }, [data.uid, db]);
+
+  
+  
+
+
+
 
   
   return (
