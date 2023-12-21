@@ -78,6 +78,7 @@ const Notification = () => {
             </div>
             <button className="btn btn-sm">See</button>
           </div>
+          
         </>
       ))}
     </div>

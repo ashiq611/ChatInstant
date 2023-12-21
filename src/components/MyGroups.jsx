@@ -73,23 +73,81 @@ const MyGroups = () => {
       </div>
       <div className="divide-y divide-blue-900 ">
         {groupList?.map((grp) => (
-          <div key={grp.id} className="flex justify-between px-5 py-2">
-            <div className="left flex gap-5">
-              <div className="avatar">
-                <div className="w-12 rounded-full">
-                  <img src={grp.groupProfile} />
+          <>
+            <div key={grp.id} className="flex justify-between px-5 py-2">
+              <div className="left flex gap-5">
+                <div className="avatar">
+                  <div className="w-12 rounded-full">
+                    <img src={grp.groupProfile} />
+                  </div>
+                </div>
+                <div className="msg">
+                  <div className="name font-bold text-base md:text-lg font-custom">
+                    <h1>{grp.groupName}</h1>
+                  </div>
+                  <div className="inbox text-sm md:text-base">
+                    <p>{grp.tagName}</p>
+                  </div>
                 </div>
               </div>
-              <div className="msg">
-                <div className="name font-bold text-base md:text-lg font-custom">
-                  <h1>{grp.groupName}</h1>
-                </div>
-                <div className="inbox text-sm md:text-base">
-                  <p>{grp.tagName}</p>
-                </div>
+              <div className="right flex items-center gap-2 flex-wrap">
+                <button
+                  onClick={() =>
+                    document.getElementById("my_modal_1").showModal()
+                  }
+                  className="btn btn-info btn-xs lg:btn-sm "
+                >
+                  Request
+                </button>
+                <button
+                  onClick={() =>
+                    document.getElementById("my_modal_2").showModal()
+                  }
+                  className="btn btn-error btn-xs lg:btn-sm "
+                >
+                  Info
+                </button>
               </div>
             </div>
-          </div>
+            <div>
+              <dialog
+                id="my_modal_1"
+                className="modal modal-bottom sm:modal-middle"
+              >
+                <div className="modal-box">
+                  <h3 className="font-bold text-lg">Hello!</h3>
+                  <p className="py-4">
+                    Press ESC key or click the button below to close
+                  </p>
+                  <div className="modal-action">
+                    <form method="dialog">
+                      {/* if there is a button in form, it will close the modal */}
+                      <button className="btn">Close</button>
+                    </form>
+                  </div>
+                </div>
+              </dialog>
+            </div>
+            <div>
+              <dialog
+                id="my_modal_2"
+                className="modal modal-bottom sm:modal-middle"
+              >
+                <div className="modal-box">
+                  <h3 className="font-bold text-lg">Hello!</h3>
+                  <p className="py-4">
+                    Press ESC key or click the button below to close
+                  </p>
+                  <div className="modal-action">
+                    <form method="dialog">
+                      {/* if there is a button in form, it will close the modal */}
+                      <button className="btn">Close</button>
+                    </form>
+                  </div>
+                </div>
+              </dialog>
+            </div>
+          </>
         ))}
       </div>
     </div>

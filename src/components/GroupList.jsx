@@ -8,6 +8,7 @@ const GroupList = () => {
   const [groupName, setGroupName] = useState("");
   const [tagName, setTagName] = useState("");
   const [profileLink, setProfileLink] = useState("");
+  const [privacy, setPrivacy] = useState("public");
   const data = useSelector((state) => state.userLoginInfo.userInfo);
 
   const [groupList, setGroupList] = useState([])
@@ -36,6 +37,7 @@ const GroupList = () => {
         groupName: groupName,
         tagName: tagName,
         groupProfile: profileLink,
+        privacy: privacy,
         adminName: data.displayName,
         adminID: data.uid,
         adminProfile: data.photoURL,
@@ -43,6 +45,7 @@ const GroupList = () => {
       setGroupName("")
       setProfileLink("")
       setTagName("")
+       setPrivacy("public");
     }
   };
 
@@ -149,6 +152,23 @@ const GroupList = () => {
                   <span className="label-text-alt">Your bio</span>
                 </div>
               </label>
+              <div className="mb-4">
+                <label
+                  htmlFor="privacy"
+                  className="block text-sm font-medium text-gray-600"
+                >
+                  Privacy
+                </label>
+                <select
+                  id="privacy"
+                  className="mt-1 p-2 w-full border rounded-md"
+                  value={privacy}
+                  onChange={(e) => setPrivacy(e.target.value)}
+                >
+                  <option value="public">Public</option>
+                  <option value="private">Private</option>
+                </select>
+              </div>
               <input className="btn" type="submit" value="Create" />
             </form>
             <div className="modal-action">
