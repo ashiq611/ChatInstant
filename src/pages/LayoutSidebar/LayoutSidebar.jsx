@@ -29,6 +29,7 @@ import {
 import { getAuth, updateProfile } from "firebase/auth";
  //  update profile in realtime db
 import { getDatabase, ref as dbRef, set } from "firebase/database";
+import HomeNav from "../../components/HomeNav";
 
 
 const LayoutSidebar = ({ children }) => {
@@ -165,10 +166,11 @@ const LayoutSidebar = ({ children }) => {
           {/* Page content here */}
 
           {children}
+          <HomeNav/>
           {/* Page content here */}
           {/* profile upload modal */}
           <div>
-            <dialog id="my_modal_1" className="modal">
+            <dialog id="my_modal_11" className="modal">
               <div className="modal-box">
                 <h3 className="font-bold text-lg">
                   Upload Your Profile Picture
@@ -248,7 +250,7 @@ const LayoutSidebar = ({ children }) => {
                     <div
                       className="uploadIcon h-full w-full hidden group-hover:flex absolute left-0 top-0 justify-center items-center text-3xl text-yellow-500 bg-black bg-opacity-70 cursor-pointer"
                       onClick={() =>
-                        document.getElementById("my_modal_1").showModal()
+                        document.getElementById("my_modal_11").showModal()
                       }
                     >
                       <FaCloudUploadAlt />

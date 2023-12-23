@@ -5,12 +5,14 @@ import Friends from "../../components/Friends";
 import FriendRequest from "../../components/FriendRequest";
 import MyGroups from "../../components/MyGroups";
 import BlockedUsers from "../../components/BlockedUsers";
+import HomeNav from "../../components/HomeNav";
 
 
 const Homes = () => {
   return (
     
       <div>
+        {/* <HomeNav/> */}
         <div className="h-screen w-full lg:flex justify-between flex-wrap">
           <label
             htmlFor="my-drawer-2"

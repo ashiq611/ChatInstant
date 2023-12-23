@@ -9,6 +9,7 @@ import Notification from "./pages/Notifications/Notification";
 import Homes from "./pages/Home/Homes";
 import LayoutSidebar from "./pages/LayoutSidebar/LayoutSidebar";
 import Settings from "./pages/Settings/Settings";
+import Newsfeed from "./pages/Newsfeed/Newsfeed";
 
 function App() {
   return (
@@ -36,8 +37,16 @@ function App() {
           path="/settings"
           element={
             <LayoutSidebar>
-              <Settings/>
+              <Settings />
             </LayoutSidebar>
+          }
+        />
+        <Route
+          path="/newsfeed"
+          element={
+          
+              <Newsfeed />
+            
           }
         />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
