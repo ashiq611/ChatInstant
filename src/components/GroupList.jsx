@@ -2,6 +2,7 @@ import { getDatabase, onValue, push, ref, set } from "firebase/database";
 import { useEffect, useState } from "react";
 import { FaUserPlus } from "react-icons/fa6";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const GroupList = () => {
   const db = getDatabase();
@@ -10,6 +11,7 @@ const GroupList = () => {
   const [profileLink, setProfileLink] = useState("");
   const [privacy, setPrivacy] = useState("public");
   const data = useSelector((state) => state.userLoginInfo.userInfo);
+  const [joinReq, setJoinReq] = useState([]);
 
   const [groupList, setGroupList] = useState([])
 
@@ -95,7 +97,40 @@ const GroupList = () => {
     return () => unsubscribe();
   }, [data.uid, db]);
 
-  
+  // join grp 
+  const handleJoin = (grp) => {
+       set(push(ref(db, "groupJoinReq")), {
+         groupID: grp.id,
+         groupName: grp.groupName,
+         tagName: grp.tagName,
+         groupProfile: grp.groupProfile,
+         privacy: grp.privacy,
+         adminName: grp.adminName,
+         adminID: grp.adminID,
+         adminProfile: grp.adminProfile,
+         senderID: data.uid,
+         senderName: data.displayName,
+         senderProfile: data.photoURL,
+       }).then(()=> {
+        toast.success(`Send your Request to ${grp.groupName}`)
+       })
+  }
+
+  useEffect(() => {
+     const friendRequestRef = ref(db, "groupJoinReq");
+     onValue(friendRequestRef, (snapshot) => {
+       let grpJoinReq = [];
+       snapshot.forEach((req) => {
+         if(req.val().senderID == data.uid){
+          grpJoinReq.push(req.val().groupID)
+         }
+       });
+       setJoinReq(grpJoinReq);
+     });
+
+  }, [db,data.uid])
+
+  console.log(joinReq)
 
 
   return (
@@ -209,7 +244,21 @@ const GroupList = () => {
               </div>
             </div>
             <div className="right flex items-center gap-2 flex-wrap">
-              <button className="btn btn-info btn-xs lg:btn-sm ">Join</button>
+              {joinReq.includes(grp.id) ? (
+                <button
+                 
+                  className="btn btn-info btn-xs lg:btn-sm "
+                >
+                  Req Pending
+                </button>
+              ) : (
+                <button
+                  onClick={() => handleJoin(grp)}
+                  className="btn btn-info btn-xs lg:btn-sm "
+                >
+                  Join
+                </button>
+              )}
             </div>
           </div>
         ))}

@@ -17,61 +17,7 @@ const Newsfeed = () => {
 
   // const [blogs, setBlogs] = useState();
 
-  // const [thumbnail, setThumbnail] = useState();
-  // const [text, setText] = useState("");
-  // const navigate = useNavigate();
-  // const user = useSelector((state) => state.userLoginInfo.userInfo);
-
-  // const addPost = async () => {
-  //   if (
-  //     blogs.title === "" ||
-  //     blogs.category === "" ||
-  //     blogs.content === "" ||
-  //     !thumbnail
-  //   ) {
-  //     // toast.error("Please Fill All Fields");
-  //     return;
-  //   }
-  //   uploadImage();
-  // };
-
-  // const uploadImage = () => {
-  //   const storageRef = ref(storage, `blogimage/${thumbnail.name}`);
-
-  //   uploadBytes(storageRef, thumbnail).then((snapshot) => {
-  //     getDownloadURL(snapshot.ref).then((url) => {
-  //       try {
-  //         const newBlogEntry = {
-  //           // title: blogs.title,
-  //           // category: blogs.category,
-  //           content: blogs,
-  //           author: user.uid,
-  //           authorName: user.displayName,
-  //           authorProfile: user.photoURL,
-  //           thumbnail: url,
-  //           date: new Date().toLocaleString("en-US", {
-  //             month: "short",
-  //             day: "2-digit",
-  //             year: "numeric",
-  //           }),
-  //         };
-
-  //         const blogsRef = dbref(database, "blogs");
-  //         const newEntryRef = push(blogsRef);
-
-  //         set(newEntryRef, newBlogEntry);
-          
-
-  //         // navigate("/profile");
-  //         // toast.success("Post Added Successfully");
-  //       } catch (error) {
-  //         // toast.error(error.message);
-  //         console.error(error);
-  //       }
-  //     });
-  //   });
-  // };
-
+ 
   // function createMarkup(c) {
   //   return { __html: c };
   // }
@@ -87,6 +33,9 @@ const Newsfeed = () => {
           <div className="divider lg:divider-horizontal"></div>
           <div>
             <CreatePost/>
+            <div>
+              
+            </div>
           </div>
           <div className="divider lg:divider-horizontal"></div>
           <div className="suggestion  hidden lg:block">

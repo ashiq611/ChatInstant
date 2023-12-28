@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { MdAddPhotoAlternate } from "react-icons/md";
 import { useState } from "react";
 import { Editor } from "@tinymce/tinymce-react";
@@ -59,6 +59,8 @@ const CreatePost = () => {
           const newEntryRef = push(blogsRef);
 
           set(newEntryRef, newBlogEntry);
+          setText('')
+          setBlogs('')
 
           // navigate("/profile");
           // toast.success("Post Added Successfully");
@@ -109,16 +111,17 @@ const CreatePost = () => {
                       alt="thumbnail"
                     />
                   )}
-                  <div>
-                    <input
-                      onChange={(e) => setThumbnail(e.target.files[0])}
-                      type="file"
-                      className="file-input file-input-bordered file-input-warning w-full max-w-xs"
-                    />
-                  </div>
+                  <div className="flex flex-col gap-5">
+                    <div>
+                      <input
+                        onChange={(e) => setThumbnail(e.target.files[0])}
+                        type="file"
+                        className="file-input file-input-bordered file-input-warning w-full max-w-xs"
+                      />
+                    </div>
 
-                  {/* Title and Category Inputs */}
-                  {/* <div className="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4 py-5 lg:py-10">
+                    {/* Title and Category Inputs */}
+                    {/* <div className="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4 py-5 lg:py-10">
                           <input
                             type="text"
                             placeholder="Title"
@@ -139,25 +142,26 @@ const CreatePost = () => {
                           />
                         </div> */}
 
-                  {/* TinyMCE Editor */}
-                  <Editor
-                    apiKey="jtgj35incgax88hnujwssjevhvfy5kisj7vowfjwhsc34xth"
-                    onEditorChange={(newValue, editor) => {
-                      setBlogs(newValue);
-                      setText(editor.getContent({ format: "text" }));
-                    }}
-                    onInit={(evt, editor) => {
-                      setText(editor.getContent({ format: "text" }));
-                    }}
-                    init={{
-                      plugins:
-                        "a11ychecker advcode advlist advtable anchor autocorrect autolink autoresize autosave casechange charmap checklist code codesample directionality editimage emoticons export footnotes formatpainter fullscreen help image importcss inlinecss insertdatetime link linkchecker lists media mediaembed mentions mergetags nonbreaking pagebreak pageembed permanentpen powerpaste preview quickbars save searchreplace table tableofcontents template tinydrive tinymcespellchecker typography visualblocks visualchars wordcount",
-                    }}
-                  />
+                    {/* TinyMCE Editor */}
+                    <Editor
+                      apiKey="jtgj35incgax88hnujwssjevhvfy5kisj7vowfjwhsc34xth"
+                      onEditorChange={(newValue, editor) => {
+                        setBlogs(newValue);
+                        setText(editor.getContent({ format: "text" }));
+                      }}
+                      onInit={(evt, editor) => {
+                        setText(editor.getContent({ format: "text" }));
+                      }}
+                      init={{
+                        plugins:
+                          "a11ychecker advcode advlist advtable anchor autocorrect autolink autoresize autosave casechange charmap checklist code codesample directionality editimage emoticons export footnotes formatpainter fullscreen help image importcss inlinecss insertdatetime link linkchecker lists media mediaembed mentions mergetags nonbreaking pagebreak pageembed permanentpen powerpaste preview quickbars save searchreplace table tableofcontents template tinydrive tinymcespellchecker typography visualblocks visualchars wordcount",
+                      }}
+                    />
+                  </div>
 
                   {/* Submit Button */}
                   <button onClick={addPost} className="btn mt-8">
-                    Send
+                    Post
                   </button>
 
                   {/* Preview Section */}
