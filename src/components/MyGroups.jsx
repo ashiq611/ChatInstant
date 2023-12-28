@@ -11,6 +11,8 @@ const MyGroups = () => {
   const [groupList, setGroupList] = useState([]);
   const [joinReq, setJoinReq] = useState([]);
   const [joinReqForGroup, setJoinReqForGroup] = useState([]);
+  const [grpMembers, setgrpMembers] = useState([]);
+  const [members, setMembers] = useState([])
 
   // read grp in realtime firebase
   // useEffect(() => {
@@ -56,7 +58,8 @@ const MyGroups = () => {
     // Detach the listener after the initial data fetch
     return () => unsubscribe();
   }, [data.uid, db]);
-// show join req in grp
+
+  // show join req in grp
   useEffect(() => {
     const friendRequestRef = ref(db, "groupJoinReq");
     onValue(friendRequestRef, (snapshot) => {
@@ -66,42 +69,94 @@ const MyGroups = () => {
       });
       setJoinReq(grpJoinReq);
     });
-  }, []);
+  }, [db]);
 
-// handle req acept in grp
+  // show member in grp
+  useEffect(() => {
+    const friendRequestRef = ref(db, "groupMembers");
+    onValue(friendRequestRef, (snapshot) => {
+      let grpmember = [];
+      snapshot.forEach((member) => {
+        grpmember.push({ ...member.val(), id: member.key });
+      });
+      setMembers(grpmember);
+    });
+  }, [db]);
 
-const handleGrpReqAcept = (request) => {
-  console.log(request);
-  set(push(ref(db, "groupMembers")), {
-    groupID: request.groupID,
-    groupName: request.groupName,
-    tagName: request.tagName,
-    groupProfile: request.groupProfile,
-    privacy: request.privacy,
-    adminName: request.adminName,
-    adminID: request.adminID,
-    adminProfile: request.adminProfile,
-    senderID: request.senderID,
-    senderName: request.senderName,
-    senderProfile: request.senderProfile,
-  }).then(() => {
+  // handle req acept in grp
+
+  const handleGrpReqAcept = (request) => {
+    console.log(request);
+    set(push(ref(db, "groupMembers")), {
+      groupID: request.groupID,
+      groupName: request.groupName,
+      tagName: request.tagName,
+      groupProfile: request.groupProfile,
+      privacy: request.privacy,
+      adminName: request.adminName,
+      adminID: request.adminID,
+      adminProfile: request.adminProfile,
+      senderID: request.senderID,
+      senderName: request.senderName,
+      senderProfile: request.senderProfile,
+    }).then(() => {
+      remove(ref(db, "groupJoinReq/" + request.id));
+    });
+
+    // Update joinReqForGroup after canceling the request
+    setJoinReqForGroup((prevRequests) =>
+      prevRequests.filter((r) => r.id !== request.id)
+    );
+  };
+
+  const handleGrpReqCancel = (request) => {
     remove(ref(db, "groupJoinReq/" + request.id));
-  });
 
-  // Update joinReqForGroup after canceling the request
-  setJoinReqForGroup((prevRequests) =>
-    prevRequests.filter((r) => r.id !== request.id)
-  );
-}
+    // Update joinReqForGroup after canceling the request
+    setJoinReqForGroup((prevRequests) =>
+      prevRequests.filter((r) => r.id !== request.id)
+    );
+  };
 
-const handleGrpReqCancel = (request) => {
-  remove(ref(db, "groupJoinReq/" + request.id));
+  // remove group member
+  const handleGrpMemberRemove = (member)=> {
+    remove(ref(db, "groupMembers/" + member.id));
 
-  // Update joinReqForGroup after canceling the request
-  setJoinReqForGroup((prevRequests) =>
-    prevRequests.filter((r) => r.id !== request.id)
-  );
-}
+    // Update joinReqForGroup after canceling the request
+    setgrpMembers((prevRequests) =>
+      prevRequests.filter((m) => m.id !== member.id)
+    );
+  }
+
+// delete grp handle
+
+  const handleGrpDelete = (grp) => {
+    console.log(grp);
+
+    // Delete from the "groups" collection
+    remove(ref(db, `groups/${grp.id}`));
+
+    // Delete related entries from the "groupMembers" collection
+    const groupMembersRef = ref(db, "groupMembers");
+    onValue(groupMembersRef, (snapshot) => {
+      snapshot.forEach((member) => {
+        if (member.val().groupID === grp.id) {
+          remove(ref(db, `groupMembers/${member.key}`));
+        }
+      });
+    });
+
+    // Delete related entries from the "groupJoinReq" collection
+    const groupJoinReqRef = ref(db, "groupJoinReq");
+    onValue(groupJoinReqRef, (snapshot) => {
+      snapshot.forEach((request) => {
+        if (request.val().groupID === grp.id) {
+          remove(ref(db, `groupJoinReq/${request.key}`));
+        }
+      });
+    });
+  };
+
 
   return (
     <div className="relative">
@@ -152,7 +207,9 @@ const handleGrpReqCancel = (request) => {
                       setJoinReqForGroup(groupJoinRequests);
 
                       // Show the modal
-                      document.getElementById("my_modal_1").showModal();
+                      document
+                        .getElementById(`my_modal_1_${grp.id}`)
+                        .showModal();
                     } else {
                       // Display an error or notification that only the admin can view and approve join requests
                       console.error(
@@ -165,9 +222,26 @@ const handleGrpReqCancel = (request) => {
                   Request
                 </button>
                 <button
-                  onClick={() =>
-                    document.getElementById("my_modal_2").showModal()
-                  }
+                  onClick={() => {
+                    // Check if the current user is the admin before processing the join request
+                    if (data.uid === grp.adminID) {
+                      // Update the state to store the join requests for the specific group
+                      const groupMemberList = members.filter(
+                        (m) => m.groupID === grp.id
+                      );
+                      setgrpMembers(groupMemberList);
+
+                      // Show the modal
+                      document
+                        .getElementById(`my_modal_2_${grp.id}`)
+                        .showModal();
+                    } else {
+                      // Display an error or notification that only the admin can view and approve join requests
+                      console.error(
+                        "Only the group admin can view and approve join requests."
+                      );
+                    }
+                  }}
                   className="btn btn-error btn-xs lg:btn-sm "
                 >
                   Info
@@ -176,7 +250,8 @@ const handleGrpReqCancel = (request) => {
             </div>
             <div>
               <dialog
-                id="my_modal_1"
+                //
+                id={`my_modal_1_${grp.id}`}
                 className="modal modal-bottom sm:modal-middle"
               >
                 <div className="modal-box">
@@ -226,14 +301,44 @@ const handleGrpReqCancel = (request) => {
             </div>
             <div>
               <dialog
-                id="my_modal_2"
+                // id="my_modal_2"
+                id={`my_modal_2_${grp.id}`}
                 className="modal modal-bottom sm:modal-middle"
               >
                 <div className="modal-box">
-                  <h3 className="font-bold text-lg">Hello!</h3>
-                  <p className="py-4">
-                    Press ESC key or click the button below to close
-                  </p>
+                  <div>
+                    <button onClick={() => handleGrpDelete(grp)}>Delete</button>
+
+                    {grpMembers.map((member) => (
+                      <div key={member.id}>
+                        <div className="flex justify-between px-5 py-2">
+                          <div className="left flex gap-5">
+                            <div className="avatar">
+                              <div className="w-12 rounded-full">
+                                <img src={member.senderProfile} />
+                              </div>
+                            </div>
+                            <div className="msg">
+                              <div className="name font-bold text-base md:text-lg font-custom">
+                                <h1>{member.senderName}</h1>
+                              </div>
+                              <div className="inbox text-sm md:text-base">
+                                <p>hello..</p>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="right flex items-center gap-2 flex-wrap">
+                            <button
+                              onClick={() => handleGrpMemberRemove(member)}
+                              className="btn btn-error btn-xs lg:btn-sm "
+                            >
+                              Remove
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                   <div className="modal-action">
                     <form method="dialog">
                       {/* if there is a button in form, it will close the modal */}
