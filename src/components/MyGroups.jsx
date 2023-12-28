@@ -1,4 +1,4 @@
-import { getDatabase, onValue, ref } from "firebase/database";
+import { getDatabase, onValue, push, ref, remove, set } from "firebase/database";
 import { useEffect, useState } from "react";
 import { HiDotsVertical } from "react-icons/hi";
 import { useSelector } from "react-redux";
@@ -6,10 +6,11 @@ import { useSelector } from "react-redux";
 const MyGroups = () => {
   const db = getDatabase();
 
-   const data = useSelector((state) => state.userLoginInfo.userInfo);
+  const data = useSelector((state) => state.userLoginInfo.userInfo);
 
-   const [groupList, setGroupList] = useState([]);
-
+  const [groupList, setGroupList] = useState([]);
+  const [joinReq, setJoinReq] = useState([]);
+  const [joinReqForGroup, setJoinReqForGroup] = useState([]);
 
   // read grp in realtime firebase
   // useEffect(() => {
@@ -26,7 +27,7 @@ const MyGroups = () => {
   //     });
   //     setGroupList(list);
   //   });
-    
+
   // }, [data.uid,db]);
 
   useEffect(() => {
@@ -55,14 +56,53 @@ const MyGroups = () => {
     // Detach the listener after the initial data fetch
     return () => unsubscribe();
   }, [data.uid, db]);
+// show join req in grp
+  useEffect(() => {
+    const friendRequestRef = ref(db, "groupJoinReq");
+    onValue(friendRequestRef, (snapshot) => {
+      let grpJoinReq = [];
+      snapshot.forEach((req) => {
+        grpJoinReq.push({ ...req.val(), id: req.key });
+      });
+      setJoinReq(grpJoinReq);
+    });
+  }, []);
 
-  
-  
+// handle req acept in grp
 
+const handleGrpReqAcept = (request) => {
+  console.log(request);
+  set(push(ref(db, "groupMembers")), {
+    groupID: request.groupID,
+    groupName: request.groupName,
+    tagName: request.tagName,
+    groupProfile: request.groupProfile,
+    privacy: request.privacy,
+    adminName: request.adminName,
+    adminID: request.adminID,
+    adminProfile: request.adminProfile,
+    senderID: request.senderID,
+    senderName: request.senderName,
+    senderProfile: request.senderProfile,
+  }).then(() => {
+    remove(ref(db, "groupJoinReq/" + request.id));
+  });
 
+  // Update joinReqForGroup after canceling the request
+  setJoinReqForGroup((prevRequests) =>
+    prevRequests.filter((r) => r.id !== request.id)
+  );
+}
 
+const handleGrpReqCancel = (request) => {
+  remove(ref(db, "groupJoinReq/" + request.id));
 
-  
+  // Update joinReqForGroup after canceling the request
+  setJoinReqForGroup((prevRequests) =>
+    prevRequests.filter((r) => r.id !== request.id)
+  );
+}
+
   return (
     <div className="relative">
       <div className="sticky top-0 p-2 flex justify-between bg-base-100 z-10">
@@ -92,9 +132,34 @@ const MyGroups = () => {
               </div>
               <div className="right flex items-center gap-2 flex-wrap">
                 <button
-                  onClick={() =>
-                    document.getElementById("my_modal_1").showModal()
-                  }
+                  // onClick={() => {
+                  //   // Update the state to store the join requests for the specific group
+                  //   const groupJoinRequests = joinReq.filter(
+                  //     (g) => g.groupID === grp.id
+                  //   );
+                  //   setJoinReqForGroup(groupJoinRequests);
+
+                  //   // Show the modal
+                  //   document.getElementById("my_modal_1").showModal();
+                  // }}
+                  onClick={() => {
+                    // Check if the current user is the admin before processing the join request
+                    if (data.uid === grp.adminID) {
+                      // Update the state to store the join requests for the specific group
+                      const groupJoinRequests = joinReq.filter(
+                        (g) => g.groupID === grp.id
+                      );
+                      setJoinReqForGroup(groupJoinRequests);
+
+                      // Show the modal
+                      document.getElementById("my_modal_1").showModal();
+                    } else {
+                      // Display an error or notification that only the admin can view and approve join requests
+                      console.error(
+                        "Only the group admin can view and approve join requests."
+                      );
+                    }
+                  }}
                   className="btn btn-info btn-xs lg:btn-sm "
                 >
                   Request
@@ -115,10 +180,41 @@ const MyGroups = () => {
                 className="modal modal-bottom sm:modal-middle"
               >
                 <div className="modal-box">
-                  <h3 className="font-bold text-lg">Hello!</h3>
-                  <p className="py-4">
-                    Press ESC key or click the button below to close
-                  </p>
+                  {joinReqForGroup.map((request) => (
+                    <div key={request.id}>
+                      <div className="flex justify-between px-5 py-2">
+                        <div className="left flex gap-5">
+                          <div className="avatar">
+                            <div className="w-12 rounded-full">
+                              <img src={request.senderProfile} />
+                            </div>
+                          </div>
+                          <div className="msg">
+                            <div className="name font-bold text-base md:text-lg font-custom">
+                              <h1>{request.senderName}</h1>
+                            </div>
+                            <div className="inbox text-sm md:text-base">
+                              <p>hello..</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="right flex items-center gap-2 flex-wrap">
+                          <button
+                            onClick={() => handleGrpReqAcept(request)}
+                            className="btn btn-info btn-xs lg:btn-sm "
+                          >
+                            Accept
+                          </button>
+                          <button
+                            onClick={() => handleGrpReqCancel(request)}
+                            className="btn btn-error btn-xs lg:btn-sm "
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
                   <div className="modal-action">
                     <form method="dialog">
                       {/* if there is a button in form, it will close the modal */}
