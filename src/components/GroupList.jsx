@@ -1,4 +1,4 @@
-import { getDatabase, onValue, push, ref, set } from "firebase/database";
+import { getDatabase, onValue, push, ref, remove, set } from "firebase/database";
 import { useEffect, useState } from "react";
 import { FaUserPlus } from "react-icons/fa6";
 import { useSelector } from "react-redux";
@@ -14,6 +14,8 @@ const GroupList = () => {
   const [joinReq, setJoinReq] = useState([]);
 
   const [groupList, setGroupList] = useState([])
+
+  const [grpMembers, setGrpMmbers] = useState([])
 
   const handleGroupName = (e) => {
     setGroupName(e.target.value);
@@ -130,7 +132,29 @@ const GroupList = () => {
 
   }, [db,data.uid])
 
-  console.log(joinReq)
+// store grp member data
+   useEffect(() => {
+     const grpMemberRef = ref(db, "groupMembers");
+     onValue(grpMemberRef, (snapshot) => {
+       let grpMembers = [];
+       snapshot.forEach((member) => {
+         if (member.val().senderID == data.uid) {
+           grpMembers.push(member.val().groupID);
+         }
+       });
+       setGrpMmbers(grpMembers);
+     });
+   }, [db, data.uid]);
+
+
+  //  const handleLeave = (grp) => {
+  //   console.log(grp);
+
+  //   // remove(ref(db, `groupMembers/${grp.id}/${data.uid}`));
+
+  //  }
+
+  console.log(grpMembers)
 
 
   return (
@@ -245,11 +269,17 @@ const GroupList = () => {
             </div>
             <div className="right flex items-center gap-2 flex-wrap">
               {joinReq.includes(grp.id) ? (
+                <button className="btn btn-info btn-xs lg:btn-sm ">
+                  Req Pending
+                </button>
+              ) : grpMembers.includes(grp.id) ? (
                 <button
-                 
+                  // onClick={() =>
+                  //   handleLeave(grpMembers.find((m) => m.groupID === grp.id))
+                  // }
                   className="btn btn-info btn-xs lg:btn-sm "
                 >
-                  Req Pending
+                  Leave
                 </button>
               ) : (
                 <button

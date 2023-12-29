@@ -186,41 +186,49 @@ const MyGroups = () => {
                 </div>
               </div>
               <div className="right flex items-center gap-2 flex-wrap">
-                <button
-                  // onClick={() => {
-                  //   // Update the state to store the join requests for the specific group
-                  //   const groupJoinRequests = joinReq.filter(
-                  //     (g) => g.groupID === grp.id
-                  //   );
-                  //   setJoinReqForGroup(groupJoinRequests);
+                <div className="indicator">
+                  {joinReqForGroup.length > 0 && (
+                    <span className="indicator-item indicator-start badge badge-secondary">
+                      {joinReqForGroup.length}
+                    </span>
+                  )}
 
-                  //   // Show the modal
-                  //   document.getElementById("my_modal_1").showModal();
-                  // }}
-                  onClick={() => {
-                    // Check if the current user is the admin before processing the join request
-                    if (data.uid === grp.adminID) {
-                      // Update the state to store the join requests for the specific group
-                      const groupJoinRequests = joinReq.filter(
-                        (g) => g.groupID === grp.id
-                      );
-                      setJoinReqForGroup(groupJoinRequests);
+                  <button
+                    // onClick={() => {
+                    //   // Update the state to store the join requests for the specific group
+                    //   const groupJoinRequests = joinReq.filter(
+                    //     (g) => g.groupID === grp.id
+                    //   );
+                    //   setJoinReqForGroup(groupJoinRequests);
 
-                      // Show the modal
-                      document
-                        .getElementById(`my_modal_1_${grp.id}`)
-                        .showModal();
-                    } else {
-                      // Display an error or notification that only the admin can view and approve join requests
-                      console.error(
-                        "Only the group admin can view and approve join requests."
-                      );
-                    }
-                  }}
-                  className="btn btn-info btn-xs lg:btn-sm "
-                >
-                  Request
-                </button>
+                    //   // Show the modal
+                    //   document.getElementById("my_modal_1").showModal();
+                    // }}
+                    onClick={() => {
+                      // Check if the current user is the admin before processing the join request
+                      if (data.uid === grp.adminID) {
+                        // Update the state to store the join requests for the specific group
+                        const groupJoinRequests = joinReq.filter(
+                          (g) => g.groupID === grp.id
+                        );
+                        setJoinReqForGroup(groupJoinRequests);
+
+                        // Show the modal
+                        document
+                          .getElementById(`my_modal_1_${grp.id}`)
+                          .showModal();
+                      } else {
+                        // Display an error or notification that only the admin can view and approve join requests
+                        console.error(
+                          "Only the group admin can view and approve join requests."
+                        );
+                      }
+                    }}
+                    className="btn btn-info btn-xs lg:btn-sm "
+                  >
+                    Request
+                  </button>
+                </div>
                 <button
                   onClick={() => {
                     // Check if the current user is the admin before processing the join request

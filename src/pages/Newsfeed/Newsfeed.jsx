@@ -1,5 +1,8 @@
+import { useEffect, useState } from "react";
 import CreatePost from "../../components/CreatePost";
 import HomeNav from "../../components/HomeNav";
+import PostCard from "../../components/PostCard";
+import { getDatabase, onValue, ref } from "firebase/database";
 
 // import { useState } from "react";
 // import { Editor } from "@tinymce/tinymce-react";
@@ -13,14 +16,29 @@ const Newsfeed = () => {
   // // file uplaod in firebase starts
   // const storage = getStorage();
   // //  update profile in realtime db
-  // const database = getDatabase();
+  const database = getDatabase();
 
-  // const [blogs, setBlogs] = useState();
+  const [posts, setPosts] = useState();
 
  
   // function createMarkup(c) {
   //   return { __html: c };
   // }
+
+    useEffect(() => {
+      const blogRef = ref(database, "blogs");
+      let bloglist = [];
+      onValue(blogRef, (snapShot) => {
+        snapShot.forEach((blog) => {
+          bloglist.push({
+            ...blog.val(),
+            id: blog.key,
+          });
+
+          setPosts(bloglist);
+        });
+      });
+    }, [database]);
 
   return (
     <div>
@@ -32,9 +50,11 @@ const Newsfeed = () => {
           </div>
           <div className="divider lg:divider-horizontal"></div>
           <div>
-            <CreatePost/>
+            <CreatePost />
             <div>
-              
+              {posts?.map((post) => (
+                <PostCard key={post.id} post={post} />
+              ))}
             </div>
           </div>
           <div className="divider lg:divider-horizontal"></div>
