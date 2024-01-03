@@ -160,7 +160,7 @@ const InboxChat = () => {
             <div className="chat-bubble">I hate you!</div>
             <div className="chat-footer opacity-50">Seen at 12:46</div>
           </div>
-
+                       {/* img message design */}
           <div className="chat chat-start">
             <div className="chat-image avatar">
               <div className="w-10 rounded-full">
