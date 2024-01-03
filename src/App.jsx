@@ -10,6 +10,7 @@ import Homes from "./pages/Home/Homes";
 import LayoutSidebar from "./pages/LayoutSidebar/LayoutSidebar";
 import Settings from "./pages/Settings/Settings";
 import Newsfeed from "./pages/Newsfeed/Newsfeed";
+import Inbox from "./pages/Inbox/Inbox";
 
 function App() {
   return (
@@ -22,6 +23,15 @@ function App() {
           element={
             <LayoutSidebar>
               <Homes />
+            </LayoutSidebar>
+          }
+        />
+
+        <Route
+          path="/inbox"
+          element={
+            <LayoutSidebar>
+              <Inbox />
             </LayoutSidebar>
           }
         />
@@ -41,14 +51,7 @@ function App() {
             </LayoutSidebar>
           }
         />
-        <Route
-          path="/newsfeed"
-          element={
-          
-              <Newsfeed />
-            
-          }
-        />
+        <Route path="/newsfeed" element={<Newsfeed />} />
         <Route path="/forgotpassword" element={<ForgotPassword />} />
         <Route path="*" element={<Error />} />
       </Routes>

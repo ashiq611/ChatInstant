@@ -11,12 +11,12 @@ const PostCard = ({post}) => {
     return { __html: c };
   }
   return (
-    <div className="p-10 m-5 border border-2 border-black">
+    <div className="p-10 m-5 border border-2 border-zinc-300 rounded-lg">
       <div className="flex gap-5 justify-between">
         <div className="flex gap-5">
           <div className="w-8 h-8 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 overflow-hidden">
             <img
-              src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+              src={authorProfile}
               alt="user-avatar"
               className="w-full h-full object-cover"
             />

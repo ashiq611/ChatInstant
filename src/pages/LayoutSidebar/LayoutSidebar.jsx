@@ -269,10 +269,10 @@ const LayoutSidebar = ({ children }) => {
                 </Link>
               </li>
               <li>
-                <a>
+                <Link to="/inbox">
                   {" "}
                   <Lottie animationData={inboxLogoAni} />
-                </a>
+                </Link>
               </li>
               <li>
                 <Link to="/notifications">
