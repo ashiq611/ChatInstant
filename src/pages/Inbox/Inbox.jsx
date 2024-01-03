@@ -2,21 +2,24 @@ import InboxChat from "../../components/InboxChat";
 import InboxFriendList from "../../components/InboxFriendList";
 import InboxGroups from "../../components/InboxGroups";
 
-
 const Inbox = () => {
-    return (
-      <div>
-        <div className="h-screen w-full lg:flex justify-between flex-wrap">
-          <div className="">
+  return (
+    <div className="min-h-screen w-full bg-gray-100">
+      <div className=" p-4 lg:flex  lg:justify-between lg:flex-wrap">
+        <div className="w-full lg:w-1/4">
+          <div className="h-1/2">
             <InboxGroups />
+          </div>
+          <div className="h-1/2">
             <InboxFriendList />
           </div>
-          <div>
-            <InboxChat />
-          </div>
+        </div>
+        <div className="w-full lg:w-3/4 mt-4 lg:mt-0 border border-2 border-red-500">
+          <InboxChat />
         </div>
       </div>
-    );
+    </div>
+  );
 };
 
 export default Inbox;
