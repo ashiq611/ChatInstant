@@ -53,7 +53,7 @@ const Newsfeed = () => {
           <div className="divider lg:divider-horizontal"></div>
           <div>
             <CreatePost />
-            <div>
+            <div className="mb-20">
               {posts?.map((post) => (
                 <PostCard key={post.id} post={post} />
               ))}
