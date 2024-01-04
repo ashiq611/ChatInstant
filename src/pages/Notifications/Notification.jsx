@@ -1,6 +1,5 @@
 import { getDatabase, onValue, ref } from "firebase/database";
 import { useEffect, useState } from "react";
-import { MdOutlineMenuOpen } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import HomeNav from "../../components/HomeNav";
@@ -39,25 +38,18 @@ const Notification = () => {
 
    
  },[db, data?.uid])
-//  console.log(note);
+ console.log(note.reverse());
 
   return (
     <div className="lg:w-2/3 mx-auto w-full h-screen overflow-y-scroll">
       <HomeNav />
-      <div>
-        <label
-          htmlFor="my-drawer-2"
-          className="btn btn-primary btn-sm drawer-button text-2xl lg:hidden"
-        >
-          <MdOutlineMenuOpen />
-        </label>
-      </div>
+      
       <div className="sticky top-0 p-2 flex justify-between bg-base-100 z-10">
         <h1 className="head font-bold text-xl font-mono">Notification</h1>
       </div>
       <div className="mb-28">
         {note?.map((n) => (
-          <>
+          
             <div key={n.id} role="alert" className="alert shadow-lg mt-5">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -81,7 +73,7 @@ const Notification = () => {
               </div>
               <button className="btn btn-sm">See</button>
             </div>
-          </>
+          
         ))}
       </div>
     </div>

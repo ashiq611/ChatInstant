@@ -3,6 +3,8 @@ import CreatePost from "../../components/CreatePost";
 import HomeNav from "../../components/HomeNav";
 import PostCard from "../../components/PostCard";
 import { getDatabase, onValue, ref } from "firebase/database";
+import UserProfile from "../../components/UserProfile";
+import GroupList from "../../components/GroupList";
 
 // import { useState } from "react";
 // import { Editor } from "@tinymce/tinymce-react";
@@ -44,9 +46,9 @@ const Newsfeed = () => {
     <div>
       <HomeNav />
       <div className="container mx-auto">
-        <div className="flex justify-between items-center">
-          <div className="post hidden lg:block">
-            <h2>user</h2>
+        <div className="flex justify-between ">
+          <div className="post h-screen sticky top-5  mt-5 hidden lg:block">
+            <UserProfile />
           </div>
           <div className="divider lg:divider-horizontal"></div>
           <div>
@@ -58,8 +60,8 @@ const Newsfeed = () => {
             </div>
           </div>
           <div className="divider lg:divider-horizontal"></div>
-          <div className="suggestion  hidden lg:block">
-            <h2>sug</h2>
+          <div className="suggestion h-screen sticky top-5 w-1/4 hidden lg:block">
+            <GroupList />
           </div>
         </div>
       </div>

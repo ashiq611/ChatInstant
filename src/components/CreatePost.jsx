@@ -62,7 +62,7 @@ const CreatePost = () => {
   };
 
   return (
-    <div className="flex items-center justify-center gap-5 p-5 border border-indigo-500/75 rounded-lg mt-5 shadow-lg shadow-indigo-500">
+    <div className="flex items-center justify-center gap-5 p-5 border border-indigo-500/75 rounded-lg mt-5 mx-2 shadow-lg shadow-indigo-300">
       <div className="w-8 h-8 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 overflow-hidden">
         <img
           src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
@@ -83,7 +83,7 @@ const CreatePost = () => {
         <MdAddPhotoAlternate />
       </button>
 
-      <dialog id="my_modal_3" className="modal modal-bottom sm:modal-middle">
+      <dialog id="my_modal_3" className="modal modal-middle">
         <div className="container mx-auto max-w-3xl p-4 bg-white  rounded-md shadow-lg">
           <div className="mb-8">
             {thumbnail && (
@@ -121,7 +121,7 @@ const CreatePost = () => {
         </div>
         <div className="modal-action">
           <form method="dialog">
-            <button className="btn">Close</button>
+            <button className="btn btn-error font-extrabold">Close</button>
           </form>
         </div>
       </dialog>

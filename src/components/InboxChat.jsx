@@ -11,7 +11,10 @@ const InboxChat = () => {
           <div className="left flex gap-2 md:gap-5">
             <div className="avatar">
               <div className="w-8 md:w-12 rounded-full">
-                <img src="" alt="" />
+                <img
+                  alt="dp"
+                  src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+                />
               </div>
             </div>
             <div className="msg">
@@ -160,7 +163,7 @@ const InboxChat = () => {
             <div className="chat-bubble">I hate you!</div>
             <div className="chat-footer opacity-50">Seen at 12:46</div>
           </div>
-                       {/* img message design */}
+          {/* img message design */}
           <div className="chat chat-start">
             <div className="chat-image avatar">
               <div className="w-10 rounded-full">
@@ -179,7 +182,8 @@ const InboxChat = () => {
                 src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
                 alt=""
               /> */}
-              <ModalImage className="h-20"
+              <ModalImage
+                className="h-20"
                 small="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
                 large="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
                 alt="Hello World!"
