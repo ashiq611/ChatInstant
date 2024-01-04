@@ -38,9 +38,9 @@ function App() {
         <Route
           path="/notifications"
           element={
-            <LayoutSidebar>
+           
               <Notification />
-            </LayoutSidebar>
+           
           }
         />
         <Route

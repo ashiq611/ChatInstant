@@ -9,7 +9,8 @@ import "cropperjs/dist/cropper.css";
 import { ImCross } from "react-icons/im";
 import homeLogoAni from "../../assets/lottie/homeLogoAni.json";
 import inboxLogoAni from "../../assets/lottie/inboxLogoAni.json";
-import notiLogoAni from "../../assets/lottie/notiLogoAni.json";
+import newsfeedLogoAni from "../../assets/lottie/newsfeedLogoAni.json";
+// import notiLogoAni from "../../assets/lottie/notiLogoAni.json";
 import settingsLogoAni from "../../assets/lottie/settingsLogoAni.json";
 import logoutLogoAni from "../../assets/lottie/logoutLogoAni.json";
 import Lottie from "lottie-react";
@@ -162,11 +163,12 @@ const LayoutSidebar = ({ children }) => {
     <div>
       <div className="drawer lg:drawer-open">
         <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
+
         <div className="h-screen w-full  drawer-content flex flex-col items-center justify-center">
           {/* Page content here */}
 
           {children}
-          <HomeNav/>
+
           {/* Page content here */}
           {/* profile upload modal */}
           <div>
@@ -275,12 +277,12 @@ const LayoutSidebar = ({ children }) => {
                 </Link>
               </li>
               <li>
-                <Link to="/notifications">
-                  <Lottie animationData={notiLogoAni} />
+                <Link to="/newsfeed">
+                  <Lottie animationData={newsfeedLogoAni} />
                 </Link>
               </li>
               <li>
-                <Link to='/settings'>
+                <Link to="/settings">
                   <Lottie animationData={settingsLogoAni} />
                 </Link>
               </li>

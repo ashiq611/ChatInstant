@@ -27,7 +27,7 @@ const InboxChat = () => {
             <HiDotsVertical />
           </div>
         </div>
-        <div className="overflow-y-auto h-[calc(100%-56px)] md:h-[calc(100%-140px)]">
+        <div className="overflow-y-auto h-full">
           {/* Your chat content */}
           <div className="chat chat-start">
             <div className="chat-image avatar">
