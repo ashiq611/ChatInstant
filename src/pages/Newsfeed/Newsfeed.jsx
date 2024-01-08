@@ -20,13 +20,10 @@ const Newsfeed = () => {
   // //  update profile in realtime db
   const database = getDatabase();
 
-  const [posts, setPosts] = useState();
+  const [posts, setPosts] = useState([]);
 
  
-  // function createMarkup(c) {
-  //   return { __html: c };
-  // }
-
+ 
     useEffect(() => {
       const blogRef = ref(database, "blogs");
       let bloglist = [];
@@ -37,10 +34,30 @@ const Newsfeed = () => {
             id: blog.key,
           });
 
-          setPosts(bloglist);
+     
         });
+        setPosts(bloglist);
       });
     }, [database]);
+
+    // useEffect(() => {
+    //   const blogRef = ref(database, "blogs");
+    //   let bloglist = [];
+
+    //   onValue(blogRef, (snapShot) => {
+    //     snapShot.forEach((blog) => {
+    //       bloglist.push({
+    //         ...blog.val(),
+    //         id: blog.key,
+    //       });
+    //     });
+
+    //     // Move setPosts outside the forEach loop
+    //     setPosts((prevPosts) => [...prevPosts, ...bloglist]);
+    //   });
+    // }, [database]);
+
+    
 
   return (
     <div>

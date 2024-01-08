@@ -37,7 +37,9 @@ const CreatePost = () => {
             author: user.uid,
             authorName: user.displayName,
             authorProfile: user.photoURL,
-            thumbnail: url,
+            likes: 0,
+            userLikes: false,
+            thumbnail: url ,
             date: new Date().toLocaleString("en-US", {
               month: "short",
               day: "2-digit",
@@ -60,6 +62,8 @@ const CreatePost = () => {
       });
     });
   };
+
+ 
 
   return (
     <div className="flex items-center justify-center gap-5 p-5 border border-indigo-500/75 rounded-lg mt-5 mx-2 shadow-lg shadow-indigo-300">
