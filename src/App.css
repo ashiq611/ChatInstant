@@ -12,3 +12,16 @@
   @apply bg-teal-500 rounded-lg
 }
 
+
+.transition-comment {
+  opacity: 1;
+  height: auto;
+  transition: opacity 0.3s ease-in-out, height 0.3s ease-in-out;
+}
+
+.comment-hidden {
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+  transition: opacity 0.3s ease-in-out, height 0.3s ease-in-out;
+}

@@ -7,7 +7,7 @@ import { ref as dbref, set, push, getDatabase } from "firebase/database";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
-const CreatePost = () => {
+const CreatePost = ({ updatePosts }) => {
   const storage = getStorage();
   const database = getDatabase();
 
@@ -38,8 +38,8 @@ const CreatePost = () => {
             authorName: user.displayName,
             authorProfile: user.photoURL,
             likes: 0,
-            userLikes: false,
-            thumbnail: url ,
+          
+            thumbnail: url,
             date: new Date().toLocaleString("en-US", {
               month: "short",
               day: "2-digit",
@@ -54,6 +54,9 @@ const CreatePost = () => {
           setBlogs("");
           setThumbnail(null);
 
+          // Call the callback to update the UI in Newsfeed
+          updatePosts(newBlogEntry);
+
           // Redirect to the profile page or any other page you prefer
           navigate("/newsfeed");
         } catch (error) {
@@ -62,8 +65,6 @@ const CreatePost = () => {
       });
     });
   };
-
- 
 
   return (
     <div className="flex items-center justify-center gap-5 p-5 border border-indigo-500/75 rounded-lg mt-5 mx-2 shadow-lg shadow-indigo-300">

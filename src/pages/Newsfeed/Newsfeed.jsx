@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import CreatePost from "../../components/CreatePost";
 import HomeNav from "../../components/HomeNav";
 import PostCard from "../../components/PostCard";
-import { getDatabase, onValue, ref } from "firebase/database";
+import { get, getDatabase, onValue, ref } from "firebase/database";
 import UserProfile from "../../components/UserProfile";
 import GroupList from "../../components/GroupList";
 
@@ -25,21 +25,29 @@ const Newsfeed = () => {
  
  
     useEffect(() => {
-      const blogRef = ref(database, "blogs");
-      let bloglist = [];
-      onValue(blogRef, (snapShot) => {
-        snapShot.forEach((blog) => {
-          bloglist.push({
-            ...blog.val(),
-            id: blog.key,
-          });
+       const fetchData = async () => {
+         const blogRef = ref(database, "blogs");
 
-     
-        });
-        setPosts(bloglist);
-      });
+         try {
+           const snapshot = await get(blogRef);
+           const bloglist = [];
+
+           snapshot.forEach((blog) => {
+             bloglist.push({
+               ...blog.val(),
+               id: blog.key,
+             });
+           });
+          
+           setPosts(bloglist);
+         } catch (error) {
+           console.error("Error fetching data:", error);
+         }
+       };
+
+       fetchData();
     }, [database]);
-
+  
     // useEffect(() => {
     //   const blogRef = ref(database, "blogs");
     //   let bloglist = [];
@@ -58,6 +66,9 @@ const Newsfeed = () => {
     // }, [database]);
 
     
+  const updatePosts = (newPost) => {
+    setPosts((prevPosts) => [newPost, ...prevPosts]);
+  };
 
   return (
     <div>
@@ -69,7 +80,7 @@ const Newsfeed = () => {
           </div>
           <div className="divider lg:divider-horizontal"></div>
           <div>
-            <CreatePost />
+            <CreatePost updatePosts={updatePosts} />
             <div className="mb-20">
               {posts?.map((post) => (
                 <PostCard key={post.id} post={post} />
