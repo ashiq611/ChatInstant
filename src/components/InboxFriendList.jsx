@@ -7,11 +7,13 @@ import {
 } from "firebase/database";
 import { useEffect, useState } from "react";
 import { HiDotsVertical } from "react-icons/hi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { activeChatInfo } from "../slices/activeChatSlice";
 
 const InboxFriendList = () => {
   const db = getDatabase();
   const [friendList, setFriendList] = useState([]);
+  const dispatch = useDispatch();
 
   const data = useSelector((state) => state.userLoginInfo.userInfo);
 
@@ -31,6 +33,50 @@ const InboxFriendList = () => {
       setFriendList(friends);
     });
   }, [data.uid, db]);
+
+  // active frined start
+  const handleActiveFriend = (f) => {
+    if(f.receiverID == data.uid){
+      dispatch(
+        activeChatInfo({
+          status: "single",
+          id: f.senderID,
+          name: f.senderName,
+          profile: f.senderProfile,
+        })
+        );
+        localStorage.setItem(
+          "activeFriend",
+          JSON.stringify({
+            status: "single",
+            id: f.senderID,
+            name: f.senderName,
+            profile: f.senderProfile,
+          })
+        );
+
+    }else{
+      dispatch(
+        activeChatInfo({
+          status: "single",
+          id: f.receiverID,
+          name: f.receiverName,
+          profile: f.receiverProfile,
+        })
+      );
+      localStorage.setItem(
+        "activeFriend",
+        JSON.stringify({
+          status: "single",
+          id: f.receiverID,
+          name: f.receiverName,
+          profile: f.receiverProfile,
+        })
+      );
+    }
+
+  };
+  // active frined ends
   return (
     <div>
       <div className="relative">
@@ -44,7 +90,11 @@ const InboxFriendList = () => {
           {/* single */}
 
           {friendList?.map((f) => (
-            <div key={f.id} className="flex justify-between px-5 py-2">
+            <div
+              key={f.id}
+              onClick={() => handleActiveFriend(f)}
+              className="flex justify-between px-5 py-2 cursor-pointer hover:bg-slate-400"
+            >
               <div className="left flex gap-5">
                 <div className="avatar">
                   <div className="w-12 rounded-full">
