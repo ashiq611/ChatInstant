@@ -31,6 +31,7 @@ import { getAuth, updateProfile } from "firebase/auth";
  //  update profile in realtime db
 import { getDatabase, ref as dbRef, set } from "firebase/database";
 import HomeNav from "../../components/HomeNav";
+import { activeChatInfo } from "../../slices/activeChatSlice";
 
 
 const LayoutSidebar = ({ children }) => {
@@ -45,6 +46,7 @@ const LayoutSidebar = ({ children }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const data = useSelector((state) => state.userLoginInfo.userInfo);
+
 
   // react cropper starts
   const [image, setImage] = useState("");
@@ -155,7 +157,13 @@ const LayoutSidebar = ({ children }) => {
   const logOutHandle = () => {
     localStorage.removeItem("user");
     dispatch(userLoginInfo(null));
-   
+   dispatch(
+     activeChatInfo(null)
+   );
+   localStorage.removeItem(
+     "activeFriend",
+    
+   );
     navigate("/");
     toast.warn("Logged out Successfully");
   };

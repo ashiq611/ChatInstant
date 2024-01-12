@@ -26,10 +26,10 @@ const InboxChat = () => {
         whoReceiveName: activeChat.name,
         whoReceiveProfile: activeChat.profile,
         msg: msg,
-        date: `${new Date().getFullYear()} - ${
+        date: `${new Date().getFullYear()}-${
           new Date().getMonth() + 1
-        } - ${new Date().getDate()}, 
-        ${new Date().getHours() % 12}:${new Date().getMinutes()}, ${
+        }-${new Date().getDate()}, 
+        ${new Date().getHours() % 12}:${new Date().getMinutes()},${
           new Date().getHours() >= 12 ? "PM" : "AM"
         }`,
       })
@@ -62,9 +62,13 @@ const InboxChat = () => {
       setMsgList(list);
     });
   }, [activeChat?.id]);
+  
   // console.log(msgList);
   return (
     <div className="w-full h-full mx-auto md:h-[90vh]">
+      {
+        activeChat && 
+    
       <div className="relative h-full">
         <div className="sticky top-0 p-2 flex justify-between bg-base-100 z-10 ">
           <div className="left flex gap-2 md:gap-5">
@@ -90,6 +94,7 @@ const InboxChat = () => {
           {/* Your chat content */}
 
           {activeChat?.status == "single" ? (
+            
             msgList.map((item) => {
               return item.whoSendID == data.uid ? (
                 <div key={item.key} className="chat chat-end">
@@ -108,6 +113,7 @@ const InboxChat = () => {
                   <div className="chat-bubble">{item.msg}</div>
                   <div className="chat-footer opacity-50">Seen at 12:46</div>
                 </div>
+                
               ) : (
                 <div key={item.key} className="chat chat-start">
                   <div className="chat-image avatar">
@@ -127,10 +133,46 @@ const InboxChat = () => {
                 </div>
               );
             })
+            
           ) : (
             <h1>grp</h1>
           )}
-          <div className="chat chat-start">
+          
+        </div>
+        <div className="sticky bottom-0 p-2 flex gap-2 lg:gap-5 justify-between items-center bg-base-100 z-10">
+          <textarea
+            onChange={(e) => setMsg(e.target.value)}
+            value={msg}
+            placeholder="Type your messages"
+            className="textarea textarea-bordered textarea-xs w-full"
+          ></textarea>
+          <div className="flex gap-2">
+            <div className="text-2xl">
+              <MdOutlineInsertEmoticon />
+            </div>
+            <div className="text-2xl">
+              <TbPhotoPlus />
+            </div>
+            <button
+              disabled={msg ? false : true}
+              onClick={handleMsgSend}
+              className="btn btn-success btn-sm"
+            >
+              Send
+            </button>
+          </div>
+        </div>
+      </div>
+       }
+    </div>
+  );
+};
+
+export default InboxChat;
+
+
+
+{/* <div className="chat chat-start">
             <div className="chat-image avatar">
               <div className="w-10 rounded-full">
                 <img
@@ -163,7 +205,7 @@ const InboxChat = () => {
             <div className="chat-footer opacity-50">Seen at 12:46</div>
           </div>
 
-          {/* img message design */}
+          
           <div className="chat chat-start">
             <div className="chat-image avatar">
               <div className="w-10 rounded-full">
@@ -178,10 +220,7 @@ const InboxChat = () => {
               <time className="text-xs opacity-50">12:45</time>
             </div>
             <div className="chat-bubble">
-              {/* <img
-                src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                alt=""
-              /> */}
+              
               <ModalImage
                 className="h-20"
                 small="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
@@ -206,34 +245,4 @@ const InboxChat = () => {
             </div>
             <div className="chat-bubble">I hate you!</div>
             <div className="chat-footer opacity-50">Seen at 12:46</div>
-          </div>
-        </div>
-        <div className="sticky bottom-0 p-2 flex gap-2 lg:gap-5 justify-between items-center bg-base-100 z-10">
-          <textarea
-            onChange={(e) => setMsg(e.target.value)}
-            value={msg}
-            placeholder="Type your messages"
-            className="textarea textarea-bordered textarea-xs w-full"
-          ></textarea>
-          <div className="flex gap-2">
-            <div className="text-2xl">
-              <MdOutlineInsertEmoticon />
-            </div>
-            <div className="text-2xl">
-              <TbPhotoPlus />
-            </div>
-            <button
-              disabled={msg ? false : true}
-              onClick={handleMsgSend}
-              className="btn btn-success btn-sm"
-            >
-              Send
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default InboxChat;
+          </div> */}
