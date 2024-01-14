@@ -3,7 +3,9 @@ import InboxChat from "../../components/InboxChat";
 import InboxFriendList from "../../components/InboxFriendList";
 import InboxGroups from "../../components/InboxGroups";
 
+
 const Inbox = () => {
+
   return (
     <div className="min-h-screen w-full bg-gray-100">
       <div>

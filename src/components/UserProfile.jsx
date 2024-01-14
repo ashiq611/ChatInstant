@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import ChangeProfie from "./ChangeProfie";
 
 
 const UserProfile = () => {
@@ -68,7 +69,15 @@ const UserProfile = () => {
             <h2 className="card-title">{data.displayName}</h2>
             <p>{data.email}</p>
             <div className="card-actions">
-              <button className="btn btn-primary">Change</button>
+              <button
+                onClick={() =>
+                  document.getElementById("my_modal_11").showModal()
+                }
+                className="btn btn-primary"
+              >
+                Change
+              </button>
+              <ChangeProfie/>
             </div>
           </div>
         </div>
