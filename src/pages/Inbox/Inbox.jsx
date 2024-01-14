@@ -25,7 +25,7 @@ const Inbox = () => {
             <InboxFriendList />
           </div>
         </div>
-        <div className="w-full lg:w-3/4 mt-4 lg:mt-0 border border-2 border-red-500">
+        <div className="w-full lg:w-3/4 p-5 lg:pb-20 mt-4 lg:mt-0 border border-2 ">
           <InboxChat />
         </div>
       </div>
