@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { getDatabase, onValue, push, ref, set } from "firebase/database";
 
+
 const InboxChat = () => {
   const db = getDatabase();
   // collect data from redux store
@@ -15,6 +16,7 @@ const InboxChat = () => {
 
   const [msg, setMsg] = useState("");
   const [msgList, setMsgList] = useState([]);
+
 
   // send msg operation starts
   const handleMsgSend = () => {
@@ -64,9 +66,10 @@ const InboxChat = () => {
     });
   }, [activeChat?.id]);
 
+ 
   // console.log(msgList);
   return (
-    <div className="w-full h-fit mx-auto md:h-[90vh]">
+    <div className="w-full h-full mx-auto md:h-[90vh]">
       {activeChat && (
         <div className="relative h-full">
           <div className="sticky top-0 p-2 flex justify-between bg-base-100 z-10 ">
@@ -89,46 +92,50 @@ const InboxChat = () => {
               <HiDotsVertical />
             </div>
           </div>
+    
           <div className="overflow-y-auto h-full flex flex-col-reverse">
             {/* Your chat content */}
 
             {activeChat?.status == "single" ? (
-              msgList.slice().reverse().map((item) => {
-                return item.whoSendID == data.uid ? (
-                  <div key={item.key} className="chat  chat-end">
-                    <div className="chat-image avatar">
-                      <div className="w-10 rounded-full">
-                        <img
-                          alt="Tailwind CSS chat bubble component"
-                          src={item.whoSendProfile}
-                        />
+              msgList
+                .slice()
+                .reverse()
+                .map((item) => {
+                  return item.whoSendID == data.uid ? (
+                    <div key={item.key} className="chat  chat-end">
+                      <div className="chat-image avatar">
+                        <div className="w-10 rounded-full">
+                          <img
+                            alt="Tailwind CSS chat bubble component"
+                            src={item.whoSendProfile}
+                          />
+                        </div>
                       </div>
-                    </div>
-                    <div className="chat-header">
-                      {item.whoSendName} {""}
-                      <time className="text-xs opacity-50">{item.date}</time>
-                    </div>
-                    <div className="chat-bubble">{item.msg}</div>
-                    <div className="chat-footer opacity-50">Delivered</div>
-                  </div>
-                ) : (
-                  <div key={item.key} className="chat chat-start">
-                    <div className="chat-image avatar">
-                      <div className="w-10 rounded-full">
-                        <img
-                          alt="Tailwind CSS chat bubble component"
-                          src={item.whoSendProfile}
-                        />
+                      <div className="chat-header">
+                        {item.whoSendName} {""}
+                        <time className="text-xs opacity-50">{item.date}</time>
                       </div>
+                      <div className="chat-bubble">{item.msg}</div>
+                      <div className="chat-footer opacity-50">Delivered</div>
                     </div>
-                    <div className="chat-header">
-                      {item.whoSendName} {""}
-                      <time className="text-xs opacity-50">{item.date}</time>
+                  ) : (
+                    <div key={item.key} className="chat chat-start">
+                      <div className="chat-image avatar">
+                        <div className="w-10 rounded-full">
+                          <img
+                            alt="Tailwind CSS chat bubble component"
+                            src={item.whoSendProfile}
+                          />
+                        </div>
+                      </div>
+                      <div className="chat-header">
+                        {item.whoSendName} {""}
+                        <time className="text-xs opacity-50">{item.date}</time>
+                      </div>
+                      <div className="chat-bubble">{item.msg}</div>
                     </div>
-                    <div className="chat-bubble">{item.msg}</div>
-                  </div>
-                );
-              })
+                  );
+                })
             ) : (
               <h1>grp</h1>
             )}
@@ -143,6 +150,7 @@ const InboxChat = () => {
             <div className="flex gap-2">
               <div className="text-2xl">
                 <MdOutlineInsertEmoticon />
+                
               </div>
               <div className="text-2xl">
                 <TbPhotoPlus />
