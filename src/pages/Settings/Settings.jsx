@@ -1,7 +1,7 @@
 import { getDatabase, onValue, ref } from "firebase/database";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-
+ 
 import { useNavigate } from "react-router-dom";
 import MobileNav from "../../components/MobileNav";
 
@@ -35,9 +35,9 @@ const Settings = () => {
       });
 
     return (
-      <div >
+      <div className="h-screen w-full">
         <div>
-         <MobileNav/>
+          <MobileNav />
         </div>
         <div>
           <div className="grid h-20 card bg-base-300 font-semibold text-2xl text-red-600 rounded-box place-items-center">

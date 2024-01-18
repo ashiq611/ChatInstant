@@ -4,50 +4,71 @@ import { MdOutlineInsertEmoticon } from "react-icons/md";
 import ModalImage from "react-modal-image";
 import { GrSend } from "react-icons/gr";
 import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getDatabase, onValue, push, ref, set } from "firebase/database";
-
+import {
+  getDownloadURL,
+  getStorage,
+  uploadBytes,
+  ref as sref,
+} from "firebase/storage";
 
 const InboxChat = () => {
   const db = getDatabase();
-  // collect data from redux store
+  const storage = getStorage();
   const data = useSelector((state) => state.userLoginInfo.userInfo);
   const activeChat = useSelector((state) => state.activeChatInfo.activeInfo);
 
   const [msg, setMsg] = useState("");
   const [msgList, setMsgList] = useState([]);
+  const [image, setImage] = useState(null);
 
+  const uploadImage = async () => {
+    const storageRef = sref(storage, `msg/${image.name}`);
+    await uploadBytes(storageRef, image);
+    return getDownloadURL(storageRef);
+  };
 
-  // send msg operation starts
-  const handleMsgSend = () => {
-    if (activeChat && activeChat?.status == "single") {
-      set(push(ref(db, "singleMsg")), {
-        whoSendID: data.uid,
-        whoSendName: data.displayName,
-        whoSendProfile: data.photoURL,
-        whoReceiveID: activeChat.id,
-        whoReceiveName: activeChat.name,
-        whoReceiveProfile: activeChat.profile,
-        msg: msg,
-        date: `${new Date().getFullYear()}-${
-          new Date().getMonth() + 1
-        }-${new Date().getDate()}, 
-        ${new Date().getHours() % 12}:${new Date().getMinutes()},${
-          new Date().getHours() >= 12 ? "PM" : "AM"
-        }`,
-      })
-        .then(() => {
-          console.log("done");
-          setMsg("");
+  const handleMsgSend = async () => {
+    try {
+      let imageUrl = null;
+
+      if (image) {
+        imageUrl = await uploadImage();
+      }
+
+      if (activeChat && activeChat?.status === "single") {
+        set(push(ref(db, "singleMsg")), {
+          whoSendID: data.uid,
+          whoSendName: data.displayName,
+          whoSendProfile: data.photoURL,
+          whoReceiveID: activeChat.id,
+          whoReceiveName: activeChat.name,
+          whoReceiveProfile: activeChat.profile,
+          msg: msg,
+          img: imageUrl,
+          date: `${new Date().getFullYear()}-${
+            new Date().getMonth() + 1
+          }-${new Date().getDate()}, 
+          ${new Date().getHours() % 12}:${new Date().getMinutes()},${
+            new Date().getHours() >= 12 ? "PM" : "AM"
+          }`,
         })
-        .catch((err) => {
-          console.log(err);
-        });
-    } else {
-      console.log("grp");
+          .then(() => {
+            console.log("Message sent");
+            setMsg("");
+            setImage(null); // Clear the selected image after sending
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        console.log("Group");
+      }
+    } catch (error) {
+      console.error("Error sending message:", error);
     }
   };
-  // send msg operation ends
 
   useEffect(() => {
     onValue(ref(db, "singleMsg"), (snapshot) => {
@@ -66,12 +87,18 @@ const InboxChat = () => {
     });
   }, [activeChat?.id]);
 
- 
-  // console.log(msgList);
+  const fileInputRef = useRef(null);
+
+  const handleCustomButtonClick = () => {
+    // Trigger the hidden file input
+    fileInputRef.current.click();
+  };
+
   return (
     <div className="w-full h-full mx-auto md:h-[90vh]">
       {activeChat && (
         <div className="relative h-full">
+          {/* Header */}
           <div className="sticky top-0 p-2 flex justify-between bg-base-100 z-10 ">
             <div className="left flex gap-2 md:gap-5">
               <div className="avatar">
@@ -92,54 +119,52 @@ const InboxChat = () => {
               <HiDotsVertical />
             </div>
           </div>
-    
-          <div className="overflow-y-auto h-full flex flex-col-reverse">
-            {/* Your chat content */}
 
-            {activeChat?.status == "single" ? (
+          {/* Message List */}
+          <div className="overflow-y-auto h-full flex flex-col-reverse">
+            {activeChat?.status === "single" ? (
               msgList
                 .slice()
                 .reverse()
-                .map((item) => {
-                  return item.whoSendID == data.uid ? (
-                    <div key={item.key} className="chat  chat-end">
-                      <div className="chat-image avatar">
-                        <div className="w-10 rounded-full">
-                          <img
-                            alt="Tailwind CSS chat bubble component"
-                            src={item.whoSendProfile}
-                          />
-                        </div>
+                .map((item) => (
+                  <div
+                    key={item.key}
+                    className={
+                      item.whoSendID === data.uid
+                        ? "chat chat-end"
+                        : "chat chat-start"
+                    }
+                  >
+                    <div className="chat-image avatar">
+                      <div className="w-10 rounded-full">
+                        <img alt="Sender's avatar" src={item.whoSendProfile} />
                       </div>
-                      <div className="chat-header">
-                        {item.whoSendName} {""}
-                        <time className="text-xs opacity-50">{item.date}</time>
-                      </div>
-                      <div className="chat-bubble">{item.msg}</div>
-                      <div className="chat-footer opacity-50">Delivered</div>
                     </div>
-                  ) : (
-                    <div key={item.key} className="chat chat-start">
-                      <div className="chat-image avatar">
-                        <div className="w-10 rounded-full">
-                          <img
-                            alt="Tailwind CSS chat bubble component"
-                            src={item.whoSendProfile}
-                          />
-                        </div>
-                      </div>
-                      <div className="chat-header">
-                        {item.whoSendName} {""}
-                        <time className="text-xs opacity-50">{item.date}</time>
-                      </div>
-                      <div className="chat-bubble">{item.msg}</div>
+                    <div className="chat-header">
+                      {item.whoSendName}{" "}
+                      <time className="text-xs opacity-50">{item.date}</time>
                     </div>
-                  );
-                })
+                    {item.msg && <div className="chat-bubble">{item.msg}</div>}
+                    {item.img && (
+                      <div className="chat-bubble">
+                        <ModalImage
+                          small={item.img}
+                          large={item.img}
+                          alt="Image message"
+                          className="h-20"
+                        />
+                      </div>
+                    )}
+                    {item.whoSendID === data.uid ? <div className="chat-footer opacity-50">Delivered</div> : "" }
+                    
+                  </div>
+                ))
             ) : (
-              <h1>grp</h1>
+              <h1>Group Chat</h1>
             )}
           </div>
+
+          {/* Message Input */}
           <div className="sticky bottom-0 p-2 flex gap-2 lg:gap-5 justify-between items-center bg-base-100 z-10">
             <textarea
               onChange={(e) => setMsg(e.target.value)}
@@ -147,16 +172,25 @@ const InboxChat = () => {
               placeholder="Type your messages"
               className="textarea textarea-bordered textarea-xs w-full"
             ></textarea>
-            <div className="flex gap-2">
-              <div className="text-2xl">
+            <div className="flex gap-2 items-center">
+              <div className="text-2xl ">
                 <MdOutlineInsertEmoticon />
-                
               </div>
-              <div className="text-2xl">
-                <TbPhotoPlus />
+              <div className="text-2xl hover:bg-green-700 hover:text-white rounded-lg p-2">
+                {/* Hidden file input */}
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  style={{ display: "none" }}
+                  onChange={(e) => setImage(e.target.files[0])}
+                />
+                {/* Custom button/icon */}
+                <label onClick={handleCustomButtonClick}>
+                  <TbPhotoPlus />
+                </label>
               </div>
               <button
-                disabled={msg ? false : true}
+                disabled={!msg && !image}
                 onClick={handleMsgSend}
                 className="btn btn-success btn-sm"
               >
@@ -171,80 +205,3 @@ const InboxChat = () => {
 };
 
 export default InboxChat;
-
-{
-  /* <div className="chat chat-start">
-            <div className="chat-image avatar">
-              <div className="w-10 rounded-full">
-                <img
-                  alt="Tailwind CSS chat bubble component"
-                  src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                />
-              </div>
-            </div>
-            <div className="chat-header">
-              Obi-Wan Kenobi
-              <time className="text-xs opacity-50">12:45</time>
-            </div>
-            <div className="chat-bubble">You were the Chosen One!</div>
-            <div className="chat-footer opacity-50">Delivered</div>
-          </div>
-          <div className="chat chat-end">
-            <div className="chat-image avatar">
-              <div className="w-10 rounded-full">
-                <img
-                  alt="Tailwind CSS chat bubble component"
-                  src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                />
-              </div>
-            </div>
-            <div className="chat-header">
-              Anakin
-              <time className="text-xs opacity-50">12:46</time>
-            </div>
-            <div className="chat-bubble">I hate you!</div>
-            <div className="chat-footer opacity-50">Seen at 12:46</div>
-          </div>
-
-          
-          <div className="chat chat-start">
-            <div className="chat-image avatar">
-              <div className="w-10 rounded-full">
-                <img
-                  alt="Tailwind CSS chat bubble component"
-                  src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                />
-              </div>
-            </div>
-            <div className="chat-header">
-              Obi-Wan Kenobi
-              <time className="text-xs opacity-50">12:45</time>
-            </div>
-            <div className="chat-bubble">
-              
-              <ModalImage
-                className="h-20"
-                small="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                large="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                alt="Hello World!"
-              />
-            </div>
-            <div className="chat-footer opacity-50">Delivered</div>
-          </div>
-          <div className="chat chat-end">
-            <div className="chat-image avatar">
-              <div className="w-10 rounded-full">
-                <img
-                  alt="Tailwind CSS chat bubble component"
-                  src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
-                />
-              </div>
-            </div>
-            <div className="chat-header">
-              Anakin
-              <time className="text-xs opacity-50">12:46</time>
-            </div>
-            <div className="chat-bubble">I hate you!</div>
-            <div className="chat-footer opacity-50">Seen at 12:46</div>
-          </div> */
-}
