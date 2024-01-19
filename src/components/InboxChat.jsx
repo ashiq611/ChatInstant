@@ -63,6 +63,7 @@ const InboxChat = () => {
             console.log(err);
           });
       } else {
+        // grp msg funtionality
         console.log("Group");
       }
     } catch (error) {
