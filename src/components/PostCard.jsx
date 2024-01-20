@@ -89,8 +89,8 @@ const PostCard = ({post}) => {
     return { __html: c };
   }
   return (
-    <div className="p-10 m-5 border border-2 border-zinc-300 rounded-lg">
-      <div className="flex gap-5 justify-between">
+    <div className="p-10 m-5 border border-zinc-300 rounded-lg">
+      <div className="flex gap-5 justify-between items-center">
         <div className="flex gap-5">
           <div className="w-8 h-8 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 overflow-hidden">
             <img
@@ -118,7 +118,7 @@ const PostCard = ({post}) => {
         {userLiked ? (
           <button
             onClick={handleUnLike}
-            className="px-5 py-2 bg-stone-300 rounded-lg"
+            className="btn btn-xs sm:btn-sm md:btn-md btn-info"
           >
             {likes}
             <BiDislike />
@@ -126,23 +126,21 @@ const PostCard = ({post}) => {
         ) : (
           <button
             onClick={handleLike}
-            className="px-5 py-2 bg-stone-300 rounded-lg"
+            className="btn btn-xs sm:btn-sm md:btn-md btn-active btn-ghost"
           >
             {likes}
             <BiLike />
           </button>
         )}
-        <button onClick={() => setCommentShow(!commentShow)} className="px-5 py-2 bg-stone-300 rounded-lg">
+        <button
+          onClick={() => setCommentShow(!commentShow)}
+          className="btn btn-xs sm:btn-sm md:btn-md btn-active btn-success "
+        >
           <FaRegCommentDots />
         </button>
-        
       </div>
       <div className={commentShow ? "transition-comment" : "comment-hidden"}>
-
-      {
-        commentShow &&
-        <Comment postID={id}/>
-      }
+        {commentShow && <Comment postID={id} />}
       </div>
     </div>
   );

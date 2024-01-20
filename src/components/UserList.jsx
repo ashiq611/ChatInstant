@@ -142,9 +142,9 @@ const UserList = () => {
                   <div className="name font-bold text-base md:text-lg font-custom">
                     <h1>{user.username}</h1>
                   </div>
-                  <div className="inbox text-sm md:text-base">
+                  {/* <div className="inbox text-sm md:text-base">
                     <p>{user.email}</p>
-                  </div>
+                  </div> */}
                 </div>
               </div>
               <div className="right flex items-center gap-2 flex-wrap">

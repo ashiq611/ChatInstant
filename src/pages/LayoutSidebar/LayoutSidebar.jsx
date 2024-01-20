@@ -76,7 +76,7 @@ const LayoutSidebar = ({ children }) => {
 
           {/* Page content here */}
           {/* profile upload modal */}
-          <ChangeProfie/>
+          <ChangeProfie />
         </div>
         <div className="drawer-side z-30">
           <label
@@ -92,8 +92,8 @@ const LayoutSidebar = ({ children }) => {
               <ImCross />
             </label>
 
-            <ul className="menu p-4 pt-10 w-40">
-              <li>
+            <ul className="menu p-4 pt-10 w-40 font-bold">
+              <li className="tooltip" data-tip="Change Profile Photo">
                 <div className="avatar online">
                   <div className="w-24 rounded-full relative group">
                     <img src={data?.photoURL} />
@@ -113,30 +113,30 @@ const LayoutSidebar = ({ children }) => {
               </li>
             </ul>
             <ul className="menu p-4 w-30 flex flex-col items-center gap-8 font-bold">
-              <li>
+              <li className="tooltip" data-tip="Home">
                 <Link to="/home">
                   <Lottie animationData={homeLogoAni} />
                 </Link>
               </li>
-              <li>
+              <li className="tooltip" data-tip="Inbox">
                 <Link to="/inbox">
                   {" "}
                   <Lottie animationData={inboxLogoAni} />
                 </Link>
               </li>
-              <li>
+              <li className="tooltip" data-tip="Newsfeed">
                 <Link to="/newsfeed">
                   <Lottie animationData={newsfeedLogoAni} />
                 </Link>
               </li>
-              <li>
+              <li className="tooltip" data-tip="Settings">
                 <Link to="/settings">
                   <Lottie animationData={settingsLogoAni} />
                 </Link>
               </li>
             </ul>
-            <ul className="menu p-4 w-30">
-              <li>
+            <ul className="menu p-4 w-30 font-bold">
+              <li className="tooltip" data-tip="Logout">
                 <button onClick={logOutHandle}>
                   <Lottie animationData={logoutLogoAni} />
                 </button>

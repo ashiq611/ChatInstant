@@ -240,7 +240,10 @@ const GroupList = () => {
         </dialog>
       </div>
       <div className="sticky top-0 p-2 flex justify-between bg-base-100 z-10 ">
-        <h1 className="head font-bold text-xl font-mono">Group List</h1>
+        <h1 className="head font-bold text-xl font-mono">
+          Group List{" "}
+          <span className="badge badge-secondary">{groupList.length}</span>
+        </h1>
         <div className="text-2xl font-bold text-cyan-600 cursor-pointer">
           <button
             onClick={() => document.getElementById("my_modal_5").showModal()}

@@ -1,7 +1,15 @@
-import { getDatabase, onValue, push, ref, remove, set } from "firebase/database";
+import {
+  getDatabase,
+  onValue,
+  push,
+  ref,
+  remove,
+  set,
+} from "firebase/database";
 import { useEffect, useState } from "react";
 import { HiDotsVertical } from "react-icons/hi";
 import { useSelector } from "react-redux";
+import { MdOutlineDeleteSweep } from "react-icons/md";
 
 const MyGroups = () => {
   const db = getDatabase();
@@ -12,7 +20,7 @@ const MyGroups = () => {
   const [joinReq, setJoinReq] = useState([]);
   const [joinReqForGroup, setJoinReqForGroup] = useState([]);
   const [grpMembers, setgrpMembers] = useState([]);
-  const [members, setMembers] = useState([])
+  const [members, setMembers] = useState([]);
 
   // read grp in realtime firebase
   // useEffect(() => {
@@ -119,16 +127,16 @@ const MyGroups = () => {
   };
 
   // remove group member
-  const handleGrpMemberRemove = (member)=> {
+  const handleGrpMemberRemove = (member) => {
     remove(ref(db, "groupMembers/" + member.id));
 
     // Update joinReqForGroup after canceling the request
     setgrpMembers((prevRequests) =>
       prevRequests.filter((m) => m.id !== member.id)
     );
-  }
+  };
 
-// delete grp handle
+  // delete grp handle
 
   const handleGrpDelete = (grp) => {
     console.log(grp);
@@ -157,11 +165,13 @@ const MyGroups = () => {
     });
   };
 
-
   return (
     <div className="relative">
       <div className="sticky top-0 p-2 flex justify-between bg-base-100 z-10">
-        <h1 className="head font-bold text-xl font-mono">My Groups</h1>
+        <h1 className="head font-bold text-xl font-mono">
+          My Groups{" "}
+          <span className="badge badge-secondary">{groupList?.length}</span>
+        </h1>
         <div className="text-2xl font-bold text-cyan-600 cursor-pointer">
           <HiDotsVertical />
         </div>
@@ -194,16 +204,6 @@ const MyGroups = () => {
                   )}
 
                   <button
-                    // onClick={() => {
-                    //   // Update the state to store the join requests for the specific group
-                    //   const groupJoinRequests = joinReq.filter(
-                    //     (g) => g.groupID === grp.id
-                    //   );
-                    //   setJoinReqForGroup(groupJoinRequests);
-
-                    //   // Show the modal
-                    //   document.getElementById("my_modal_1").showModal();
-                    // }}
                     onClick={() => {
                       // Check if the current user is the admin before processing the join request
                       if (data.uid === grp.adminID) {
@@ -315,7 +315,13 @@ const MyGroups = () => {
               >
                 <div className="modal-box">
                   <div>
-                    <button onClick={() => handleGrpDelete(grp)}>Delete</button>
+                    <button
+                      className="btn btn-error btn-xs sm:btn-sm tooltip tooltip-right"
+                      data-tip="Delete Group"
+                      onClick={() => handleGrpDelete(grp)}
+                    >
+                      <MdOutlineDeleteSweep />
+                    </button>
 
                     {grpMembers.map((member) => (
                       <div key={member.id}>

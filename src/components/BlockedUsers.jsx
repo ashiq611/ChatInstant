@@ -37,7 +37,10 @@ const BlockedUsers = () => {
   return (
     <div className="relative">
       <div className="sticky top-0 p-2 flex justify-between bg-base-100 z-10">
-        <h1 className="head font-bold text-xl font-mono">Blocked Users</h1>
+        <h1 className="head font-bold text-xl font-mono">
+          Blocked Users{" "}
+          <span className="badge badge-secondary">{blockList?.length}</span>
+        </h1>
         <div className="text-2xl font-bold text-cyan-600 cursor-pointer">
           <HiDotsVertical />
         </div>
@@ -62,7 +65,10 @@ const BlockedUsers = () => {
                 </div>
               </div>
               <div className="right flex items-center gap-2 flex-wrap">
-                <button onClick={() => handleUnblock(b) } className="btn btn-warning btn-xs lg:btn-sm ">
+                <button
+                  onClick={() => handleUnblock(b)}
+                  className="btn btn-warning btn-xs lg:btn-sm "
+                >
                   Unblock
                 </button>
               </div>

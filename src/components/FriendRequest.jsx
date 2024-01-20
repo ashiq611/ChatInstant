@@ -52,7 +52,7 @@ const FriendRequest = () => {
       <div className="sticky top-0 p-2 flex justify-between bg-base-100 z-10 ">
         <h1 className="head font-bold text-xl font-mono">
           Friend Request{" "}
-          <span className="badge badge-secondary">{pendingReq.length}</span>
+          <span className="badge badge-secondary">{pendingReq?.length}</span>
         </h1>
         <div className="text-2xl font-bold text-cyan-600 cursor-pointer">
           <HiDotsVertical />

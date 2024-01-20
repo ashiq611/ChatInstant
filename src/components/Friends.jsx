@@ -66,7 +66,10 @@ const Friends = () => {
   return (
     <div className="relative">
       <div className="sticky top-0 p-2 flex justify-between bg-base-100 z-10 ">
-        <h1 className="head font-bold text-xl font-mono">Friends</h1>
+        <h1 className="head font-bold text-xl font-mono">
+          Friends{" "}
+          <span className="badge badge-secondary">{friendList.length}</span>
+        </h1>
         <div className="text-2xl font-bold text-cyan-600 cursor-pointer">
           <HiDotsVertical />
         </div>

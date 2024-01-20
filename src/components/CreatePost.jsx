@@ -70,14 +70,14 @@ const CreatePost = ({ updatePosts }) => {
     <div className="flex items-center justify-center gap-5 p-5 border border-indigo-500/75 rounded-lg mt-5 mx-2 shadow-lg shadow-indigo-300">
       <div className="w-8 h-8 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2 overflow-hidden">
         <img
-          src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg"
+          src={user.photoURL}
           alt="user-avatar"
           className="w-full h-full object-cover"
         />
       </div>
       <button
         onClick={() => document.getElementById("my_modal_3").showModal()}
-        className="px-10 py-5 bg-slate-400 rounded-md"
+        className="px-10 py-4 bg-slate-400 rounded-md"
       >
         What's on your mind?
       </button>
