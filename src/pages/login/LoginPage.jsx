@@ -65,7 +65,7 @@ const LoginPage = () => {
     } else if (password === "") {
       setPasswordError("Please Enter Your Password");
     } else {
-      console.log( email, password);
+      // console.log( email, password);
 
       // firebase auth signin
       signInWithEmailAndPassword(auth, email, password)
@@ -96,7 +96,14 @@ const LoginPage = () => {
         .catch((error) => {
           const errorCode = error.code;
           const errorMessage = error.message;
-          console.log(error)
+        //  console.log(errorCode, errorMessage);
+         if (
+           errorCode == "auth/invalid-login-credentials" ||
+           errorMessage == "Firebase: Error (auth/invalid-login-credentials)."
+         ){
+
+           toast.error("Incorrect Username or Password");
+         }
         });
       // toastify
     }
