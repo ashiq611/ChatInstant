@@ -43,6 +43,19 @@ const FriendRequest = () => {
     .then(() => {
       remove(ref(db, "friendRequest/" + req.id));
     })
+    .then(() => {
+      // user notification
+      // Record the notification Date
+      const loggedInDate = new Date().toISOString();
+
+      set(push(ref(db, "notifications")), {
+        userID: req.senderID,
+        note: `${data.displayName} acpeted your friend Request`,
+        loggedInDate: loggedInDate, // Add the Logged In Date
+      });
+      // user notifications
+    })
+
 
   }
 
