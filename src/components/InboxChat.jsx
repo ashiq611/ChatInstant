@@ -21,6 +21,7 @@ const InboxChat = () => {
 
   const [msg, setMsg] = useState("");
   const [msgList, setMsgList] = useState([]);
+  const [msgListgrp, setMsgListgrp] = useState([]);
   const [image, setImage] = useState(null);
 
   const uploadImage = async () => {
@@ -65,6 +66,31 @@ const InboxChat = () => {
       } else {
         // grp msg funtionality
         console.log("Group");
+
+        set(push(ref(db, "grpMsg")), {
+          whoSendID: data.uid,
+          whoSendName: data.displayName,
+          whoSendProfile: data.photoURL,
+          whoReceiveID: activeChat.id,
+          whoReceiveName: activeChat.name,
+          whoReceiveProfile: activeChat.profile,
+          msg: msg,
+          img: imageUrl,
+          date: `${new Date().getFullYear()}-${
+            new Date().getMonth() + 1
+          }-${new Date().getDate()}, 
+          ${new Date().getHours() % 12}:${new Date().getMinutes()},${
+            new Date().getHours() >= 12 ? "PM" : "AM"
+          }`,
+        })
+          .then(() => {
+            console.log("Message sent");
+            setMsg("");
+            setImage(null); // Clear the selected image after sending
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     } catch (error) {
       console.error("Error sending message:", error);
@@ -88,12 +114,27 @@ const InboxChat = () => {
     });
   }, [activeChat?.id]);
 
+  useEffect(() => {
+    onValue(ref(db, "grpMsg"), (snapshot) => {
+      let list = [];
+      snapshot.forEach((item) => {
+        
+       
+          list.push({ ...item.val(), key: item.key });
+        
+      });
+      setMsgListgrp(list);
+    });
+  }, [activeChat?.id]);
+
   const fileInputRef = useRef(null);
 
   const handleCustomButtonClick = () => {
     // Trigger the hidden file input
     fileInputRef.current.click();
   };
+
+  console.log(msgListgrp);
 
   return (
     <div className="w-full h-full mx-auto md:h-[90vh]">
@@ -123,46 +164,95 @@ const InboxChat = () => {
 
           {/* Message List */}
           <div className="overflow-y-auto h-full flex flex-col-reverse">
-            {activeChat?.status === "single" ? (
-              msgList
-                .slice()
-                .reverse()
-                .map((item) => (
-                  <div
-                    key={item.key}
-                    className={
-                      item.whoSendID === data.uid
-                        ? "chat chat-end"
-                        : "chat chat-start"
-                    }
-                  >
-                    <div className="chat-image avatar">
-                      <div className="w-10 rounded-full">
-                        <img alt="Sender's avatar" src={item.whoSendProfile} />
+            {activeChat?.status === "single"
+              ? msgList
+                  .slice()
+                  .reverse()
+                  .map((item) => (
+                    <div
+                      key={item.key}
+                      className={
+                        item.whoSendID === data.uid
+                          ? "chat chat-end"
+                          : "chat chat-start"
+                      }
+                    >
+                      <div className="chat-image avatar">
+                        <div className="w-10 rounded-full">
+                          <img
+                            alt="Sender's avatar"
+                            src={item.whoSendProfile}
+                          />
+                        </div>
                       </div>
-                    </div>
-                    <div className="chat-header">
-                      {item.whoSendName}{" "}
-                      <time className="text-xs opacity-50">{item.date}</time>
-                    </div>
-                    {item.msg && <div className="chat-bubble">{item.msg}</div>}
-                    {item.img && (
-                      <div className="chat-bubble">
-                        <ModalImage
-                          small={item.img}
-                          large={item.img}
-                          alt="Image message"
-                          className="h-20"
-                        />
+                      <div className="chat-header">
+                        {item.whoSendName}{" "}
+                        <time className="text-xs opacity-50">{item.date}</time>
                       </div>
-                    )}
-                    {item.whoSendID === data.uid ? <div className="chat-footer opacity-50">Delivered</div> : "" }
-                    
-                  </div>
-                ))
-            ) : (
-              <h1>Group Chat</h1>
-            )}
+                      {item.msg && (
+                        <div className="chat-bubble">{item.msg}</div>
+                      )}
+                      {item.img && (
+                        <div className="chat-bubble">
+                          <ModalImage
+                            small={item.img}
+                            large={item.img}
+                            alt="Image message"
+                            className="h-20"
+                          />
+                        </div>
+                      )}
+                      {item.whoSendID === data.uid ? (
+                        <div className="chat-footer opacity-50">Delivered</div>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                  ))
+              : msgListgrp
+                  .slice()
+                  .reverse()
+                  .map((item) => (
+                    <div
+                      key={item.key}
+                      className={
+                        item.whoSendID === data.uid
+                          ? "chat chat-end"
+                          : "chat chat-start"
+                      }
+                    >
+                      <div className="chat-image avatar">
+                        <div className="w-10 rounded-full">
+                          <img
+                            alt="Sender's avatar"
+                            src={item.whoSendProfile}
+                          />
+                        </div>
+                      </div>
+                      <div className="chat-header">
+                        {item.whoSendName}{" "}
+                        <time className="text-xs opacity-50">{item.date}</time>
+                      </div>
+                      {item.msg && (
+                        <div className="chat-bubble">{item.msg}</div>
+                      )}
+                      {item.img && (
+                        <div className="chat-bubble">
+                          <ModalImage
+                            small={item.img}
+                            large={item.img}
+                            alt="Image message"
+                            className="h-20"
+                          />
+                        </div>
+                      )}
+                      {item.whoSendID === data.uid ? (
+                        <div className="chat-footer opacity-50">Delivered</div>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                  ))}
           </div>
 
           {/* Message Input */}

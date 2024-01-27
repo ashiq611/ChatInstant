@@ -165,43 +165,43 @@ const InboxGroups = () => {
       dispatch(
         activeChatInfo({
           status: "grp",
-          id: f.senderID,
-          name: f.senderName,
-          profile: f.senderProfile,
+          id: f.id,
+          name: f.groupName,
+          profile: f.groupProfile,
         })
       );
       localStorage.setItem(
         "activeFriend",
         JSON.stringify({
           status: "grp",
-          id: f.senderID,
-          name: f.senderName,
-          profile: f.senderProfile,
+          id: f.id,
+          name: f.groupName,
+          profile: f.groupProfile,
         })
       );
     } else {
       dispatch(
         activeChatInfo({
           status: "grp",
-          id: f.receiverID,
-          name: f.receiverName,
-          profile: f.receiverProfile,
+          id: f.id,
+          name: f.groupName,
+          profile: f.groupProfile,
         })
       );
       localStorage.setItem(
         "activeFriend",
         JSON.stringify({
           status: "grp",
-          id: f.receiverID,
-          name: f.receiverName,
-          profile: f.receiverProfile,
+          id: f.id,
+          name: f.groupName,
+          profile: f.groupProfile,
         })
       );
     }
   };
   // active frined ends
 
-  console.log(grpMembers);
+  console.log(groupList);
 
   return (
     <div className="relative">
@@ -297,7 +297,11 @@ const InboxGroups = () => {
       </div>
       <div className="divide-y divide-blue-900 ">
         {groupList?.map((grp) => (
-          <div key={grp.id} className="flex justify-between px-5 py-2">
+          <div
+            key={grp.id}
+            onClick={() => handleActiveFriend(grp)}
+            className="flex justify-between px-5 py-2"
+          >
             <div className="left flex gap-5">
               <div className="avatar">
                 <div className="w-12 rounded-full">
