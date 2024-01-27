@@ -86,12 +86,12 @@ const InboxGroups = () => {
     const fetchData = (snapshot) => {
       let list = [];
       snapshot.forEach((grp) => {
-        if (data.uid !== grp.val().adminID) {
+        
           list.push({
             ...grp.val(),
             id: grp.key,
           });
-        }
+        
       });
       // Clear the state before updating to prevent duplicates
       setGroupList([]);
@@ -319,12 +319,13 @@ const InboxGroups = () => {
             </div>
             <div className="right flex items-center gap-2 flex-wrap">
               {joinReq.includes(grp.id) ? (
-                <button className="btn btn-info btn-xs lg:btn-sm ">
+                <button disabled className="btn btn-info btn-xs lg:btn-sm ">
                   Req Pending
                 </button>
               ) : grpMembers.includes(grp.id) ? (
                 <button
                   onClick={() => handleActiveFriend(grp)}
+                  disabled
                   className="btn btn-info btn-xs lg:btn-sm "
                 >
                   Chat
@@ -332,6 +333,7 @@ const InboxGroups = () => {
               ) : (
                 <button
                   onClick={() => handleJoin(grp)}
+                  disabled
                   className="btn btn-info btn-xs lg:btn-sm "
                 >
                   Join

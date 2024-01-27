@@ -119,8 +119,10 @@ const InboxChat = () => {
       let list = [];
       snapshot.forEach((item) => {
         
-       
-          list.push({ ...item.val(), key: item.key });
+       if( item.val().whoReceiveID == activeChat.id || item.val().whoSendID == activeChat.id ){
+
+         list.push({ ...item.val(), key: item.key });
+       }
         
       });
       setMsgListgrp(list);
