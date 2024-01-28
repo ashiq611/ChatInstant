@@ -100,20 +100,17 @@ const InboxGroups = () => {
     const fetchData = (snapshot) => {
       let list = [];
       snapshot.forEach((grp) => {
-       if (grpMembers.includes(grp.key) || data.uid == grp.val().adminID) {
-         list.push({
-           ...grp.val(),
-           id: grp.key,
-         });
-        //  console.log("grp paisi");
-       } else {
-         console.log("grp pai nai");
-       }
-          // list.push({
-          //   ...grp.val(),
-          //   id: grp.key,
-          // });
-        
+        if (grpMembers.includes(grp.key) || data.uid === grp.val().adminID) {
+          list.push({
+            ...grp.val(),
+            id: grp.key,
+          });
+          // console.log("grp paisi");
+        } 
+        // list.push({
+        //   ...grp.val(),
+        //   id: grp.key,
+        // });
       });
       // Clear the state before updating to prevent duplicates
       setGroupList([]);
@@ -127,7 +124,7 @@ const InboxGroups = () => {
 
     // Detach the listener after the initial data fetch
     return () => unsubscribe();
-  }, [data.uid, db]);
+  }, [data.uid, db, grpMembers]);
 
   // join grp
   const handleJoin = (grp) => {
