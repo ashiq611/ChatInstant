@@ -136,7 +136,7 @@ const InboxChat = () => {
     fileInputRef.current.click();
   };
 
-  console.log(msgListgrp);
+  // console.log(msgListgrp);
 
   return (
     <div className="w-full h-full mx-auto md:h-[90vh]">

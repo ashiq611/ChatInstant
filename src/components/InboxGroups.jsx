@@ -61,6 +61,20 @@ const InboxGroups = () => {
     }
   };
 
+  // store grp member data
+  useEffect(() => {
+    const grpMemberRef = ref(db, "groupMembers");
+    onValue(grpMemberRef, (snapshot) => {
+      let grpMembers = [];
+      snapshot.forEach((member) => {
+        if (member.val().senderID == data.uid) {
+          grpMembers.push(member.val().groupID);
+        }
+      });
+      setGrpMmbers(grpMembers);
+    });
+  }, [db, data.uid]);
+
   // read grp in realtime firebase
   // useEffect(() => {
   //   const groupRef = ref(db, "groups");
@@ -86,11 +100,19 @@ const InboxGroups = () => {
     const fetchData = (snapshot) => {
       let list = [];
       snapshot.forEach((grp) => {
-        
-          list.push({
-            ...grp.val(),
-            id: grp.key,
-          });
+       if (grpMembers.includes(grp.key) || data.uid == grp.val().adminID) {
+         list.push({
+           ...grp.val(),
+           id: grp.key,
+         });
+        //  console.log("grp paisi");
+       } else {
+         console.log("grp pai nai");
+       }
+          // list.push({
+          //   ...grp.val(),
+          //   id: grp.key,
+          // });
         
       });
       // Clear the state before updating to prevent duplicates
@@ -139,19 +161,7 @@ const InboxGroups = () => {
     });
   }, [db, data.uid]);
 
-  // store grp member data
-  useEffect(() => {
-    const grpMemberRef = ref(db, "groupMembers");
-    onValue(grpMemberRef, (snapshot) => {
-      let grpMembers = [];
-      snapshot.forEach((member) => {
-        if (member.val().senderID == data.uid) {
-          grpMembers.push(member.val().groupID);
-        }
-      });
-      setGrpMmbers(grpMembers);
-    });
-  }, [db, data.uid]);
+  
 
   //  const handleLeave = (grp) => {
   //   console.log(grp);
@@ -201,7 +211,7 @@ const InboxGroups = () => {
   };
   // active frined ends
 
-  console.log(groupList);
+  console.log(grpMembers);
 
   return (
     <div className="relative">
