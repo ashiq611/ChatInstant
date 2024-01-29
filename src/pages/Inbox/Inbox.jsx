@@ -40,9 +40,9 @@ const Inbox = () => {
               </div>
             )}
             {activeChat !== null && (
-              <div>
+              <div className="h-screen">
                 
-                <InboxChat />{" "}
+                <InboxChat />
               </div>
             )}
           </div>
