@@ -3,7 +3,8 @@ import { TbPhotoPlus } from "react-icons/tb";
 import { MdOutlineInsertEmoticon } from "react-icons/md";
 import ModalImage from "react-modal-image";
 import { GrSend } from "react-icons/gr";
-import {  useSelector } from "react-redux";
+import {  useDispatch, useSelector } from "react-redux";
+import { useMediaQuery } from "react-responsive";
 import { useEffect, useRef, useState } from "react";
 import { getDatabase, onValue, push, ref, set } from "firebase/database";
 import {
@@ -12,20 +13,27 @@ import {
   uploadBytes,
   ref as sref,
 } from "firebase/storage";
+import { activeChatInfo } from "../slices/activeChatSlice";
 
 
 const InboxChat = () => {
   const db = getDatabase();
 
   const storage = getStorage();
-
+   
   const data = useSelector((state) => state.userLoginInfo.userInfo);
   const activeChat = useSelector((state) => state.activeChatInfo.activeInfo);
+
+  const dispatch = useDispatch();
 
   const [msg, setMsg] = useState("");
   const [msgList, setMsgList] = useState([]);
   const [msgListgrp, setMsgListgrp] = useState([]);
   const [image, setImage] = useState(null);
+
+   const isMobile = useMediaQuery({
+     query: "(max-width: 900px)",
+   });
 
   const uploadImage = async () => {
     const storageRef = sref(storage, `msg/${image.name}`);
@@ -141,12 +149,14 @@ const InboxChat = () => {
 
   // console.log(msgListgrp);
 
-
+ const handleBack = () => {
+   dispatch(activeChatInfo(null));
+   localStorage.removeItem("activeFriend");
+ };
  
 
   return (
     <div className="w-full h-full mx-auto md:h-[90vh]">
-      
       {activeChat && (
         <div className="relative h-full">
           {/* Header */}
@@ -167,7 +177,17 @@ const InboxChat = () => {
               </div>
             </div>
             <div className="text-xl font-bold text-cyan-600 cursor-pointer">
-              <HiDotsVertical />
+              {isMobile ? (
+                <button
+                  className="btn btn-warning btn-xs sticky top-2 z-30"
+                  onClick={handleBack}
+                >
+                  back
+                </button>
+              ) : (
+                <HiDotsVertical />
+              )}
+              {/* <HiDotsVertical /> */}
             </div>
           </div>
 

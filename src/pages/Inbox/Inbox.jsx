@@ -18,10 +18,7 @@ const Inbox = () => {
 
   console.log(isMobile);
 
-  const handleBack = () => {
-    dispatch(activeChatInfo(null));
-    localStorage.removeItem("activeFriend");
-  };
+ 
 
 
   return (
@@ -44,12 +41,7 @@ const Inbox = () => {
             )}
             {activeChat !== null && (
               <div>
-                <button
-                  className="btn btn-success btn-xs"
-                  onClick={handleBack}
-                >
-                  back
-                </button>
+                
                 <InboxChat />{" "}
               </div>
             )}
