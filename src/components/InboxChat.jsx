@@ -3,7 +3,7 @@ import { TbPhotoPlus } from "react-icons/tb";
 import { MdOutlineInsertEmoticon } from "react-icons/md";
 import ModalImage from "react-modal-image";
 import { GrSend } from "react-icons/gr";
-import { useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
 import { getDatabase, onValue, push, ref, set } from "firebase/database";
 import {
@@ -13,9 +13,12 @@ import {
   ref as sref,
 } from "firebase/storage";
 
+
 const InboxChat = () => {
   const db = getDatabase();
+
   const storage = getStorage();
+
   const data = useSelector((state) => state.userLoginInfo.userInfo);
   const activeChat = useSelector((state) => state.activeChatInfo.activeInfo);
 
@@ -103,8 +106,8 @@ const InboxChat = () => {
       snapshot.forEach((item) => {
         if (
           (item.val().whoSendID == data.uid &&
-            item.val().whoReceiveID == activeChat.id) ||
-          (item.val().whoSendID == activeChat.id &&
+            item.val().whoReceiveID == activeChat?.id) ||
+          (item.val().whoSendID == activeChat?.id &&
             item.val().whoReceiveID == data.uid)
         ) {
           list.push({ ...item.val(), key: item.key });
@@ -119,7 +122,7 @@ const InboxChat = () => {
       let list = [];
       snapshot.forEach((item) => {
         
-       if( item.val().whoReceiveID == activeChat.id || item.val().whoSendID == activeChat.id ){
+       if( item.val().whoReceiveID == activeChat?.id || item.val().whoSendID == activeChat?.id ){
 
          list.push({ ...item.val(), key: item.key });
        }
@@ -138,8 +141,12 @@ const InboxChat = () => {
 
   // console.log(msgListgrp);
 
+
+ 
+
   return (
     <div className="w-full h-full mx-auto md:h-[90vh]">
+      
       {activeChat && (
         <div className="relative h-full">
           {/* Header */}

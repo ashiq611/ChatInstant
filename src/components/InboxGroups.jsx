@@ -307,7 +307,7 @@ const InboxGroups = () => {
           <div
             key={grp.id}
             onClick={() => handleActiveFriend(grp)}
-            className="flex justify-between px-5 py-2"
+            className="flex justify-between px-5 py-2 cursor-pointer  hover:bg-slate-400"
           >
             <div className="left flex gap-5">
               <div className="avatar">
