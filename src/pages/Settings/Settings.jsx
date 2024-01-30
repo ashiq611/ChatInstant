@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
  
 import { useNavigate } from "react-router-dom";
 import MobileNav from "../../components/MobileNav";
+import ProfileUpdate from "../../components/ProfileUpdate";
 
 
 const Settings = () => {
@@ -39,6 +40,7 @@ const Settings = () => {
         <div>
           <MobileNav />
         </div>
+        <ProfileUpdate/>
         <div>
           <div className="grid h-20 card bg-base-300 font-semibold text-2xl text-red-600 rounded-box place-items-center">
             Logged In History
