@@ -11,6 +11,7 @@ const Settings = () => {
   const navigate = useNavigate();
     const db = getDatabase();
     const [devices, setDevices] = useState([]);
+    const [editShow, setEditShow] = useState(false);
 
     const data = useSelector((state) => state.userLoginInfo.userInfo);
 
@@ -40,7 +41,19 @@ const Settings = () => {
         <div>
           <MobileNav />
         </div>
-        <ProfileUpdate/>
+        <div className="flex flex-col flex-wrap items-center m-5">
+
+        <button
+          onClick={() => setEditShow(!editShow)}
+          className="btn btn-xs sm:btn-sm md:btn-md btn-active btn-success "
+          >
+          Change Profile Details
+        </button>
+        <div className={editShow ? "transition-comment" : "comment-hidden"}>
+          {editShow && <ProfileUpdate />}
+        </div>
+          </div>
+        {/* <ProfileUpdate /> */}
         <div>
           <div className="grid h-20 card bg-base-300 font-semibold text-2xl text-red-600 rounded-box place-items-center">
             Logged In History
